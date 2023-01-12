@@ -1,5 +1,8 @@
 import { Grid } from "@mui/material"
-import Course from "./Course/Course"
+import { useState } from "react"
+import CoursesList from "./Course/CoursesList"
+import Filter from "./SearchBar/Filter"
+import Search from "./SearchBar/Search"
 
 const Home = () => {
     const courses = [
@@ -23,14 +26,25 @@ const Home = () => {
         }
     ]
 
+    const [filteredCourses, setFilteresCourses] = useState(courses)
+
+    const filterCourses = (value) => {
+        const filtered = courses.filter(course => course.name.toLowerCase().includes(value.toLowerCase()))
+        setFilteresCourses(filtered)
+    }
+
     return (
-        <Grid container justifyContent="center" spacing={2} sx={{ marginTop: "2em" }}>
-            {courses.map(course =>
-                <Grid item xs={8}>
-                    <Course course={course} />
-                </Grid>
-            )
-            }
+        <Grid container justifyContent="center" spacing={2} sx={{ marginTop: "1em" }}>
+            <Grid item xs={2} />
+            <Grid item xs={6}>
+                <Search courses={courses} filterCourses={filterCourses} />
+            </Grid>
+            <Grid item xs={2}>
+                <Filter />
+            </Grid>
+            <Grid item xs={12}>
+                <CoursesList courses={filteredCourses} />
+            </Grid>
         </Grid>
     )
 }
