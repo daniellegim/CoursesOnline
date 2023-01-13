@@ -4,7 +4,7 @@ const Course = (props) => {
     const course = props.course
 
     return (
-        <Card key={course.id}>
+        <Card key={course._id}>
             <CardHeader title={course.name} />
             <CardContent>
                 <Grid container direction="row">

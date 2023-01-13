@@ -1,32 +1,24 @@
 import { Grid } from "@mui/material"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import CourseServer from "../serverAPI/course"
 import CoursesList from "./Course/CoursesList"
 import Filter from "./SearchBar/Filter"
 import Search from "./SearchBar/Search"
 
 const Home = () => {
-    const courses = [
-        {
-            id: 1,
-            name: "react",
-            description: "react course",
-            price: "200"
-        },
-        {
-            id: 2,
-            name: "C++",
-            description: "C++ course",
-            price: "150"
-        },
-        {
-            id: 3,
-            name: "Python",
-            description: "python course",
-            price: "100"
-        }
-    ]
+    const [courses, setCourses] = useState([])
+    const [filteredCourses, setFilteresCourses] = useState([])
 
-    const [filteredCourses, setFilteresCourses] = useState(courses)
+    useEffect(() => {
+        const getData = async () => {
+            const data = await CourseServer.getAllCourses()
+
+            setCourses(data)
+            setFilteresCourses(data)
+        }
+
+        getData()
+    }, [])
 
     const filterCourses = (value) => {
         const filtered = courses.filter(course => course.name.toLowerCase().includes(value.toLowerCase()))
