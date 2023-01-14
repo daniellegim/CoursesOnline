@@ -25,6 +25,15 @@ const Home = () => {
         setFilteresCourses(filtered)
     }
 
+    const filterCoursePrice = (filter) => {
+        const prices = filter["price"].map(range => range.split("-"))
+        console.log(prices)
+        // const filtered = courses.filter(course =>  )
+        // prices.forEach(range => {
+        //     console.log(range)
+        // });
+    }
+
     return (
         <Grid container justifyContent="center" spacing={2} sx={{ marginTop: "1em" }}>
             <Grid item xs={2} />
@@ -32,7 +41,7 @@ const Home = () => {
                 <Search courses={courses} filterCourses={filterCourses} />
             </Grid>
             <Grid item xs={2}>
-                <Filter />
+                <Filter filterCoursePrice={filterCoursePrice} />
             </Grid>
             <Grid item xs={12}>
                 <CoursesList courses={filteredCourses} />
