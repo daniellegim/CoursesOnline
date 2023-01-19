@@ -1,9 +1,8 @@
+import ReactRouter from "./components/Router/Router";
 
-function App() {
+const App = () => {
   return (
-    <div>
-      Hi
-    </div>
+    <ReactRouter />
   );
 }
 
