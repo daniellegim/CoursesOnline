@@ -26,12 +26,8 @@ const Home = () => {
     }
 
     const filterCoursePrice = (filter) => {
-        const prices = filter["price"].map(range => range.split("-"))
-        console.log(prices)
-        // const filtered = courses.filter(course =>  )
-        // prices.forEach(range => {
-        //     console.log(range)
-        // });
+        const filtered = courses.filter(course => course.price >= filter.min && course.price <= filter.max)
+        setFilteresCourses(filtered)
     }
 
     return (
@@ -41,7 +37,7 @@ const Home = () => {
                 <Search courses={courses} filterCourses={filterCourses} />
             </Grid>
             <Grid item xs={2}>
-                <Filter filterCoursePrice={filterCoursePrice} />
+                <Filter courses={courses} filterCoursePrice={filterCoursePrice} />
             </Grid>
             <Grid item xs={12}>
                 <CoursesList courses={filteredCourses} />
