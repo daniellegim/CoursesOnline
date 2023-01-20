@@ -5,6 +5,10 @@ export const useStyles = makeStyles((theme) =>
         menu: {
             color: "black",
             textDecoration: "none"
+        },
+        authButton:{
+            color: "white",
+            textDecoration: "none"
         }
     })
 );
