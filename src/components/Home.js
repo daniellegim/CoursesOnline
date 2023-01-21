@@ -33,14 +33,14 @@ const Home = () => {
 
     return (
         <Grid container justifyContent="center" spacing={2} sx={{ marginTop: "1em" }}>
-            <Grid item xs={2} />
+            <Grid item xs={3} />
             <Grid item xs={5}>
                 <Search courses={courses} filterCourses={filterCourses} />
             </Grid>
             <Grid item xs={2}>
                 <Filter courses={courses} filterCoursePrice={filterCoursePrice} />
             </Grid>
-            <Grid item>
+            <Grid item xs={1}>
                 <ShoppingCart />
             </Grid>
             <Grid item xs={12}>

@@ -1,8 +1,14 @@
 import { Button, Card, CardActions, CardContent, CardHeader, Grid, Typography } from "@mui/material"
 import { AddShoppingCart } from '@mui/icons-material'
+import { useCartFunctions } from "../ShoppingCart/CartContext"
 
 const Course = (props) => {
     const course = props.course
+    const { addToCart } = useCartFunctions()
+
+    const handleAddToCart = (course) => {
+        addToCart(course)
+    }
 
     return (
         <Card key={course._id}>
@@ -20,7 +26,11 @@ const Course = (props) => {
                 </Grid> */}
             </CardContent>
             <CardActions>
-                <Button variant="contained" sx={{ marginLeft: "auto" }} endIcon={<AddShoppingCart />}>
+                <Button
+                    variant="contained"
+                    endIcon={<AddShoppingCart />}
+                    onClick={() => handleAddToCart(course)}
+                    sx={{ marginLeft: "auto" }} >
                     הוספה לסל
                 </Button>
             </CardActions>
