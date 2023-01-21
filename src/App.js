@@ -1,8 +1,11 @@
 import ReactRouter from "./components/Router/Router";
+import { CartProvider } from "./components/ShoppingCart/CartContext";
 
 const App = () => {
   return (
-    <ReactRouter />
+    <CartProvider>
+      <ReactRouter />
+    </CartProvider>
   );
 }
 

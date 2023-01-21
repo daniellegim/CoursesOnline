@@ -4,6 +4,7 @@ import CourseServer from "../serverAPI/course"
 import CoursesList from "./Course/CoursesList"
 import Filter from "./SearchBar/Filter"
 import Search from "./SearchBar/Search"
+import ShoppingCart from "./ShoppingCart/ShoppingCart"
 
 const Home = () => {
     const [courses, setCourses] = useState([])
@@ -32,12 +33,15 @@ const Home = () => {
 
     return (
         <Grid container justifyContent="center" spacing={2} sx={{ marginTop: "1em" }}>
-            <Grid item xs={2} />
-            <Grid item xs={6}>
+            <Grid item xs={3} />
+            <Grid item xs={5}>
                 <Search courses={courses} filterCourses={filterCourses} />
             </Grid>
             <Grid item xs={2}>
                 <Filter courses={courses} filterCoursePrice={filterCoursePrice} />
+            </Grid>
+            <Grid item xs={1}>
+                <ShoppingCart />
             </Grid>
             <Grid item xs={12}>
                 <CoursesList courses={filteredCourses} />
