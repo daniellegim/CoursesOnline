@@ -1,4 +1,4 @@
-import { Button, Card, CardActions, CardContent, CardHeader, Grid, Typography } from "@mui/material"
+import { Button, Card, CardActions, CardContent, CardHeader, Rating, Typography } from "@mui/material"
 import { AddShoppingCart } from '@mui/icons-material'
 import { useCartFunctions } from "../ShoppingCart/CartContext"
 
@@ -17,15 +17,18 @@ const Course = (props) => {
                 action={
                     <Typography variant="h6" sx={{ marginRight: "1em", marginTop: "0.5em" }}>{course.price}₪</Typography>
                 }
+                subheader={
+                    <>
+                        <Typography>{course.author}</Typography>
+                        <Typography >{course.category}</Typography>
+                    </>
+                }
             />
             <CardContent>
-                {/* <Grid container direction="row">
-                    <Grid item xs={11}> */}
                 <Typography variant="h6">{course.description}</Typography>
-                {/* </Grid>
-                </Grid> */}
             </CardContent>
             <CardActions>
+                <Rating value={course.rating} precision={0.5} readOnly />
                 <Button
                     variant="contained"
                     endIcon={<AddShoppingCart />}

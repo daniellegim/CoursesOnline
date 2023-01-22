@@ -2,7 +2,7 @@ import { Grid } from "@mui/material"
 import { useEffect, useState } from "react"
 import CourseServer from "../serverAPI/course"
 import CoursesList from "./Course/CoursesList"
-import Filter from "./SearchBar/Filter"
+import Filter from "./Filter/Filter"
 import Search from "./SearchBar/Search"
 import ShoppingCart from "./ShoppingCart/ShoppingCart"
 

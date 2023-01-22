@@ -1,15 +1,38 @@
 import { useEffect, useState } from 'react'
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton } from '@mui/material'
 import { FilterAlt } from '@mui/icons-material'
 import CheckboxList from './Checkbox'
 import SliderFilter from './Slider'
+import RatingFilter from './Rating'
+import AutocompleteFilter from './Autocomplete'
 
 const filtersList = {
     price: {
         min: 0,
         max: 400
+    },
+    rating: {
+        value: 0
+    },
+    category: {
+        value: []
     }
 }
+
+const categories = [
+    {
+        id: 1,
+        name: "תכנות"
+    },
+    {
+        id: 2,
+        name: "בישול"
+    },
+    {
+        id: 3,
+        name: "ריקוד"
+    }
+]
 
 const Filter = (props) => {
     const [openDialog, setOpenDialog] = useState(false)
@@ -63,6 +86,15 @@ const Filter = (props) => {
         }))
     }
 
+    const handleValueChange = (filterName) => (event, newValue) => {
+        setFilters(prev => ({
+            ...prev,
+            [filterName]: {
+                value: newValue
+            }
+        }))
+    }
+
     return (
         <>
             <IconButton onClick={handleOpenDialog}>
@@ -77,7 +109,33 @@ const Filter = (props) => {
                 <DialogTitle>מסננים</DialogTitle>
                 <DialogContent>
                     {/* <CheckboxList listName="price" label="מחיר" list={filters["price"]} handleCheckChange={handleCheckChange} /> */}
-                    <SliderFilter label="מחיר" max={maxPrice} list={filters["price"]} handleSliderChange={handleSliderChange} />
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <AutocompleteFilter
+                                label="קטגוריות"
+                                filterName="category"
+                                options={categories}
+                                filter={filters["category"]}
+                                handleValueChange={handleValueChange}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <SliderFilter
+                                label="מחיר"
+                                max={maxPrice}
+                                list={filters["price"]}
+                                handleSliderChange={handleSliderChange}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <RatingFilter
+                                label="ציון"
+                                filterName="rating"
+                                filter={filters["rating"]}
+                                handleValueChange={handleValueChange}
+                            />
+                        </Grid>
+                    </Grid>
                 </DialogContent>
                 <DialogActions>
                     <Button id="no" onClick={handleCloseDialog}>בטל</Button>

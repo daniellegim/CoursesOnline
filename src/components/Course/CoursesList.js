@@ -7,7 +7,7 @@ const CoursesList = (props) => {
     return (
         <Grid container justifyContent="center" spacing={2}>
             {courses.map(course =>
-                <Grid item xs={7}>
+                <Grid key={course._id} item xs={7}>
                     <Course course={course} />
                 </Grid>
             )
