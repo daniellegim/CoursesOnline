@@ -24,7 +24,7 @@ const ShoppingCart = () => {
         if (event.currentTarget.id === "yes") {
             setLoadingSave(true)
             const courses = coursesInCart.map(course => ({
-                userId: "123",
+                userId: "456",
                 courseId: course._id
             }))
 

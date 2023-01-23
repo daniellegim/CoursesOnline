@@ -4,7 +4,7 @@ const RatingFilter = (props) => {
     return (
         <>
             <Typography>{props.label}</Typography>
-            <Rating value={props.filter.value} precision={0.5} onChange={props.handleValueChange(props.filterName)}
+            <Rating value={props.filter?.value || 0} precision={0.5} onChange={props.handleValueChange(props.filterName)}
             />
         </>
     )

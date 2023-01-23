@@ -21,13 +21,16 @@ const Home = () => {
         getData()
     }, [])
 
-    const filterCourses = (value) => {
+    const filterCoursesByName = (value) => {
         const filtered = courses.filter(course => course.name.toLowerCase().includes(value.toLowerCase()))
         setFilteresCourses(filtered)
     }
 
-    const filterCoursePrice = (filter) => {
-        const filtered = courses.filter(course => course.price >= filter.min && course.price <= filter.max)
+    const filterCourses = async (filters) => {
+        const categories = filters["category"]?.value.map(category => category._id)
+
+        const filtered = await CourseServer.getFilteredCourses(categories, filters["price"], filters["rating"]?.value)
+
         setFilteresCourses(filtered)
     }
 
@@ -35,10 +38,10 @@ const Home = () => {
         <Grid container justifyContent="center" spacing={2} sx={{ marginTop: "1em" }}>
             <Grid item xs={3} />
             <Grid item xs={5}>
-                <Search courses={courses} filterCourses={filterCourses} />
+                <Search courses={courses} filterCourses={filterCoursesByName} />
             </Grid>
             <Grid item xs={2}>
-                <Filter courses={courses} filterCoursePrice={filterCoursePrice} />
+                <Filter courses={courses} filterCourses={filterCourses} />
             </Grid>
             <Grid item xs={1}>
                 <ShoppingCart />

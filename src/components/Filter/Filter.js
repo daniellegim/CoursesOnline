@@ -5,44 +5,29 @@ import CheckboxList from './Checkbox'
 import SliderFilter from './Slider'
 import RatingFilter from './Rating'
 import AutocompleteFilter from './Autocomplete'
-
-const filtersList = {
-    price: {
-        min: 0,
-        max: 400
-    },
-    rating: {
-        value: 0
-    },
-    category: {
-        value: []
-    }
-}
-
-const categories = [
-    {
-        id: 1,
-        name: "תכנות"
-    },
-    {
-        id: 2,
-        name: "בישול"
-    },
-    {
-        id: 3,
-        name: "ריקוד"
-    }
-]
+import CategoryServer from '../../serverAPI/category'
+import CourseServer from '../../serverAPI/course'
 
 const Filter = (props) => {
     const [openDialog, setOpenDialog] = useState(false)
-    const [filters, setFilters] = useState(filtersList)
+    const [filters, setFilters] = useState({})
+    const [categories, setCategories] = useState()
     const [maxPrice, setMaxPrice] = useState()
 
     useEffect(() => {
         const max = Math.max(...props.courses.map(course => course.price))
         setMaxPrice(max)
     }, [props.courses])
+
+    useEffect(() => {
+        const getData = async () => {
+            const data = await CategoryServer.getAllCategories()
+
+            setCategories(data)
+        }
+
+        getData()
+    }, [])
 
     const handleOpenDialog = () => {
         setOpenDialog(true)
@@ -60,7 +45,7 @@ const Filter = (props) => {
             //     }
             // }, {})
 
-            props.filterCoursePrice(filters["price"])
+            props.filterCourses(filters)
         }
 
         setOpenDialog(false)
