@@ -18,7 +18,7 @@ const CourseInCart = (props) => {
                     action={
                         <Typography variant="h6" sx={{ marginRight: "1em", marginTop: "0.5em" }}>{course.price}₪</Typography>
                     }
-                    subheader={course.description}
+                    subheader={course.author}
                 />
             </Card>
             <IconButton onClick={() => handleRemoveFromCart(course)}>

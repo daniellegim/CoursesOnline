@@ -1,13 +1,20 @@
 import { Slider, Typography } from "@mui/material"
 
+const price = {
+    min: 0,
+    max: 400
+}
+
 const SliderFilter = (props) => {
     const list = props.list
-    const maxValue = Math.min(list.max, props.max)
+    const markMin = list?.min || price.min
+    const markMax = list?.max || price.max
+    const maxValue = Math.min(markMax, props.max)
 
     const marks = [
         {
-            value: list.min,
-            label: `${list.min}₪`,
+            value: markMin,
+            label: `${markMin}₪`,
         },
         {
             value: maxValue,
@@ -21,7 +28,7 @@ const SliderFilter = (props) => {
             <Slider
                 valueLabelDisplay="auto"
                 max={props.max}
-                value={[list.min, list.max]}
+                value={[markMin, markMax]}
                 marks={marks}
                 onChange={props.handleSliderChange}
                 sx={{ marginTop: "1em" }}
