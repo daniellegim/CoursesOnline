@@ -1,25 +1,33 @@
 import { useEffect, useState } from 'react'
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton } from '@mui/material'
 import { FilterAlt } from '@mui/icons-material'
 import CheckboxList from './Checkbox'
 import SliderFilter from './Slider'
-
-const filtersList = {
-    price: {
-        min: 0,
-        max: 400
-    }
-}
+import RatingFilter from './Rating'
+import AutocompleteFilter from './Autocomplete'
+import CategoryServer from '../../serverAPI/category'
+import CourseServer from '../../serverAPI/course'
 
 const Filter = (props) => {
     const [openDialog, setOpenDialog] = useState(false)
-    const [filters, setFilters] = useState(filtersList)
+    const [filters, setFilters] = useState({})
+    const [categories, setCategories] = useState()
     const [maxPrice, setMaxPrice] = useState()
 
     useEffect(() => {
         const max = Math.max(...props.courses.map(course => course.price))
         setMaxPrice(max)
     }, [props.courses])
+
+    useEffect(() => {
+        const getData = async () => {
+            const data = await CategoryServer.getAllCategories()
+
+            setCategories(data)
+        }
+
+        getData()
+    }, [])
 
     const handleOpenDialog = () => {
         setOpenDialog(true)
@@ -37,7 +45,7 @@ const Filter = (props) => {
             //     }
             // }, {})
 
-            props.filterCoursePrice(filters["price"])
+            props.filterCourses(filters)
         }
 
         setOpenDialog(false)
@@ -63,6 +71,15 @@ const Filter = (props) => {
         }))
     }
 
+    const handleValueChange = (filterName) => (event, newValue) => {
+        setFilters(prev => ({
+            ...prev,
+            [filterName]: {
+                value: newValue
+            }
+        }))
+    }
+
     return (
         <>
             <IconButton onClick={handleOpenDialog}>
@@ -77,7 +94,33 @@ const Filter = (props) => {
                 <DialogTitle>מסננים</DialogTitle>
                 <DialogContent>
                     {/* <CheckboxList listName="price" label="מחיר" list={filters["price"]} handleCheckChange={handleCheckChange} /> */}
-                    <SliderFilter label="מחיר" max={maxPrice} list={filters["price"]} handleSliderChange={handleSliderChange} />
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <AutocompleteFilter
+                                label="קטגוריות"
+                                filterName="category"
+                                options={categories}
+                                filter={filters["category"]}
+                                handleValueChange={handleValueChange}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <SliderFilter
+                                label="מחיר"
+                                max={maxPrice}
+                                list={filters["price"]}
+                                handleSliderChange={handleSliderChange}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <RatingFilter
+                                label="ציון"
+                                filterName="rating"
+                                filter={filters["rating"]}
+                                handleValueChange={handleValueChange}
+                            />
+                        </Grid>
+                    </Grid>
                 </DialogContent>
                 <DialogActions>
                     <Button id="no" onClick={handleCloseDialog}>בטל</Button>
