@@ -20,7 +20,7 @@ const Course = (props) => {
                 subheader={
                     <>
                         <Typography>{course.author}</Typography>
-                        <Typography >{course.category}</Typography>
+                        <Typography >{course.category.name}</Typography>
                     </>
                 }
             />
