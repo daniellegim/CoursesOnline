@@ -35,7 +35,6 @@ const Navbar = () => {
 
         setOpenDrawer(open)
     };
-
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
@@ -53,7 +52,7 @@ const Navbar = () => {
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         קורסים אונליין
                     </Typography>
-                    <Button color="inherit">Login</Button>
+                    <Link className={classes.authButton} to="/auth"><Button color="inherit">Login</Button></Link>
                 </Toolbar>
             </AppBar>
             <React.Fragment>
