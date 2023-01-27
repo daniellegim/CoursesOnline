@@ -5,10 +5,10 @@ const CoursesList = (props) => {
     const courses = props.courses
 
     return (
-        <Grid container justifyContent="center" spacing={2} sx={{ overflow: "auto", height: "73vh" }}>
+        <Grid container spacing={2} sx={{ overflow: "auto", maxHeight: "73vh" }}>
             {courses.map(course =>
-                <Grid key={course._id} item xs={7}>
-                    <Course course={course} />
+                <Grid key={course._id} item xs={4}>
+                    <Course course={course} userCourses={props.userCourses} />
                 </Grid>
             )
             }

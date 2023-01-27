@@ -1,8 +1,10 @@
 import { Button, Card, CardActions, CardContent, CardHeader, Rating, Typography } from "@mui/material"
 import { AddShoppingCart } from '@mui/icons-material'
 import { useCartFunctions } from "../ShoppingCart/CartContext"
+import { useStyles } from "./style"
 
 const Course = (props) => {
+    const classes = useStyles()
     const course = props.course
     const { addToCart } = useCartFunctions()
 
@@ -11,7 +13,7 @@ const Course = (props) => {
     }
 
     return (
-        <Card key={course._id}>
+        <Card key={course._id} className={classes.card}>
             <CardHeader
                 title={course.name}
                 action={
@@ -29,13 +31,16 @@ const Course = (props) => {
             </CardContent>
             <CardActions>
                 <Rating value={course.rating} precision={0.5} readOnly />
-                <Button
-                    variant="contained"
-                    endIcon={<AddShoppingCart />}
-                    onClick={() => handleAddToCart(course)}
-                    sx={{ marginLeft: "auto" }} >
-                    הוספה לסל
-                </Button>
+                {!props.userCourses ?
+                    <Button
+                        variant="contained"
+                        endIcon={<AddShoppingCart />}
+                        onClick={() => handleAddToCart(course)}
+                        sx={{ marginLeft: "auto" }} >
+                        הוספה לסל
+                    </Button>
+                    : null
+                }
             </CardActions>
         </Card>
     )
