@@ -4,6 +4,7 @@ import Home from "../Home"
 import Navbar from "./Navbar";
 import Profile from "../Profile/Profile"
 import AuthPage from "../../pages/AuthPage"
+import UserCourses from "../UserCourses/UserCourses";
 
 const ReactRouter = () => {
     return (
@@ -12,6 +13,7 @@ const ReactRouter = () => {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/mycourses" element={<UserCourses />} />
                 <Route path="/auth" element={<AuthPage />} />
             </Routes>
         </Router>

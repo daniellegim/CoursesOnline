@@ -46,7 +46,7 @@ const Home = () => {
             <Grid item xs={1}>
                 <ShoppingCart />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={10}>
                 <CoursesList courses={filteredCourses} />
             </Grid>
         </Grid>
