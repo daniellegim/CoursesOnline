@@ -22,7 +22,7 @@ export default class CourseServer {
 
     static addCourse(newCourse) {
         return axios.post("/courses", { newCourse })
-            .then(response => response.data)
+            .then(response => response)
             .catch(err => err.message)
     }
 }

@@ -1,3 +1,9 @@
+const Profile = () => {
+
+}
+
+export default Profile
+
 // const Profile = () => {
 //     const ImgUpload =({
 //         onChange,

@@ -19,10 +19,10 @@ const UserCourses = () => {
 
     return (
         <Grid container justifyContent="center" spacing={2} sx={{ marginTop: "1em" }}>
-            <Grid item xs={2}>
+            <Grid item xs={3}>
                 <Typography variant="h4">קורסים שרכשתי</Typography>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={10}>
                 <CoursesList courses={courses} userCourses={true} />
             </Grid>
         </Grid>
