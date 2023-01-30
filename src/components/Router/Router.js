@@ -5,6 +5,7 @@ import Navbar from "./Navbar";
 import Profile from "../Profile/Profile"
 import AuthPage from "../../pages/AuthPage"
 import UserCourses from "../UserCourses/UserCourses";
+import Admin from "../Admin/Admin";
 
 const ReactRouter = () => {
     return (
@@ -14,6 +15,7 @@ const ReactRouter = () => {
                 <Route path="/" element={<Home />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/mycourses" element={<UserCourses />} />
+                <Route path="/admin" element={<Admin />} />
                 <Route path="/auth" element={<AuthPage />} />
             </Routes>
         </Router>

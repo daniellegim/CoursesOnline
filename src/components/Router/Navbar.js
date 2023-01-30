@@ -25,6 +25,10 @@ const Navbar = () => {
         {
             path: "/profile",
             text: "פרופיל"
+        },
+        {
+            path: "/admin",
+            text: "מנהלן"
         }
     ]
 
