@@ -9,6 +9,12 @@ export default class UserCourseServer {
                 .catch(err => err.message)
     }
 
+    static getCategoryChartData() {
+        return axios.get("/usercourses")
+                .then(response => response.data)
+                .catch(err => err.message)
+    }
+
     static addUserCourses(courses) {
         return axios.post("/usercourses", { courses })
                 .then(response => response)
