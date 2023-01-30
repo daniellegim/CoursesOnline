@@ -1,5 +1,6 @@
 import { Button, Grid, Typography } from "@mui/material"
 import { useState } from "react"
+import CategoryChart from "./Chart"
 import CreateCourse from "./CreateCourse"
 
 const Admin = () => {
@@ -27,6 +28,11 @@ const Admin = () => {
             {displayForm &&
                 <Grid item xs={4}>
                     <CreateCourse handleCancel={handleCancel} />
+                </Grid>
+            }
+            {!displayForm &&
+                <Grid item>
+                    <CategoryChart />
                 </Grid>
             }
         </Grid>
