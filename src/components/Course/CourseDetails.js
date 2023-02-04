@@ -47,7 +47,7 @@ const Course = (props) => {
                             <Typography variant="h5">{course.duration}</Typography>
                         </Grid>
                         <Grid key="Level" item xs={4}>
-                            <Typography variant="h5">{course.level.name}</Typography>
+                            <Typography variant="h5">{(course.level)?course.level.name:"Not Provide"}</Typography>
                         </Grid>
                         <Grid key="Price" item xs={4}>
                         <Typography variant="h5">{course.price}</Typography>

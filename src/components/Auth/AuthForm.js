@@ -2,7 +2,7 @@ import { useState , useRef, useContext } from 'react';
 import AuthContext from '../../store/auth-context';
 import { useNavigate } from 'react-router-dom';
 import classes from './AuthForm.module.css';
-import { TextField, Avatar, Button } from '@mui/material';
+import { TextField, Avatar, Button,Container,Card,CardContent,CardHeader } from '@mui/material';
 import ImgUpload from "../Profile/ImgUpload"
 
 const AuthForm = () => {
@@ -111,55 +111,44 @@ fetch (url ,
 }
 
   return (
-    <section className={classes.auth}>
-      <h1>{isLogin ? 'Login' : 'Sign Up'}</h1>
-      <form onSubmit={submitHandler}>
+    <Container>
+      <Card>
+      <CardHeader>{isLogin ? 'Login' : 'Sign Up'}</CardHeader>
+        <CardContent className={classes.centerItemClass}>
+        <form onSubmit={submitHandler}>
       {isLogin === false && 
-      <div className={classes.control}>
+      <div>
       <ImgUpload onChange={photoUpload} src={ProfileImage}/>
-        {/* <label htmlFor='email'>Your Email</label> */}
-        {/* <input type='email' id='email' required ref = {emailInputRef}/>  */}
-        {/* <Avatar variant="contained" component="label" src={ProfileImage}>
-  Upload File
-  <input
-    type="file"
-    accept="image/*"
-    hidden
-    ref = {uploadImageRef}
-    onChange={getProfileImage}
-  />
-</Avatar> */}
-        {/* <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" /> */}
-       
       </div>
       }
-        <div className={classes.control}>
-        
-          <label htmlFor='email'>Your Email</label>
-          {/* <input type='email' id='email' required ref = {emailInputRef}/>  */}
-          <TextField  type="email" id='email' required  inputRef = {emailInputRef}/>
-         
+        <div className={classes.emailClass}>
+          <TextField variant="outlined" label="Your Email"  type="email" id='email' required  inputRef = {emailInputRef}/>
         </div>
-        <div className={classes.control}>
-          <label htmlFor='password'>Your Password</label>
-          <TextField type="password" minLength="7" id='password' required inputRef={passwordInputRef}></TextField>
-          {/* <input type='password' id='password'  minLength = "7" required ref =  /> */}
+        <div className={classes.passwordClass}>
+          <TextField variant="outlined" label="Your Password" type="password" minLength="7" id='password' required inputRef={passwordInputRef}></TextField>
         </div>
-        <div className={classes.actions}>
-          {!isLoading && <button>{isLogin ? 'Login' : 'Create Account'}</button>}
+        <div className={classes.submitButtonClass}>
+          {!isLoading && <Button type="submit" variant='contained'>{isLogin ? 'Login' : 'Create Account'}</Button>}
           {
             isLoading && <p> Loading ... </p>
           }
-          <button
-            type='button'
-            className={classes.toggle}
+          </div>
+          <div className={classes.switchButtonClass}>
+          <Button
+            variant='text'
             onClick={switchAuthModeHandler}
           >
             {isLogin ? 'Create new account' : 'Login with existing account'}
-          </button>
-        </div>
+          </Button>
+          </div>
       </form>
-    </section>
+        </CardContent>
+      </Card>
+    {/* <section className={classes.auth}> */}
+      {/* <h1>{isLogin ? 'Login' : 'Sign Up'}</h1> */}
+
+    {/* </section> */}
+    </Container>
   );
 };
 
