@@ -11,7 +11,9 @@ const Course = (props) => {
     const handleAddToCart = (course) => {
         addToCart(course)
     }
-
+    const raiseNavigateEvent = () =>{
+        props.navigateProduct(course);
+    }
     return (
         <Card key={course._id} className={classes.card}>
             <CardHeader
@@ -27,7 +29,9 @@ const Course = (props) => {
                 }
             />
             <CardContent>
+                <div onClick={raiseNavigateEvent}>
                 <Typography variant="h6">{course.description}</Typography>
+                </div>
             </CardContent>
             <CardActions>
                 <Rating value={course.rating} precision={0.5} readOnly />
