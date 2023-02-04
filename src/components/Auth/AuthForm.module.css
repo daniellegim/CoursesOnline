@@ -1,4 +1,22 @@
-.auth {
+.centerItemClass{
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  text-align: center;
+}
+.emailClass{
+  padding-top: 5%;
+}
+.passwordClass{
+  padding-top: 5%;
+}
+.submitButtonClass{
+  padding-top: 5%;
+}
+.switchButtonClass{
+  padding-top: 5%;
+}
+/* .auth {
   margin: 3rem auto;
   width: 95%;
   max-width: 25rem;
@@ -70,4 +88,4 @@
 .actions {
   background-color: transparent;
   color: #ae82cc;
-}
+} */
