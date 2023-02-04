@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -9,9 +9,11 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Drawer, List, ListItem, ListItemButton, ListItemText } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useStyles } from './style';
+import AuthContext from "../../store/auth-context"
 
 const Navbar = () => {
     const classes = useStyles()
+    const authCtx = useContext (AuthContext); 
     const [openDrawer, setOpenDrawer] = useState(false)
     const menu = [
         {
@@ -56,7 +58,11 @@ const Navbar = () => {
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         קורסים אונליין
                     </Typography>
-                    <Link className={classes.authButton} to="/auth"><Button color="inherit">Login</Button></Link>
+                    <Link className={classes.authButton} to="/auth">
+                        {(authCtx.token != null)?
+                            <Button color="inherit">Logout</Button> :
+                            <Button color="inherit">Login</Button>}
+                    </Link>
                 </Toolbar>
             </AppBar>
             <React.Fragment>

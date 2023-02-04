@@ -10,7 +10,7 @@ const ImgUpload =({
   return(
     <label htmlFor="photo-upload" className={labelClassImage}>
       <div className={divClassImage} >
-        <img for="photo-upload" src={src} defaultValue="https://github.com/OlgaKoplik/CodePen/blob/master/profile.jpg?raw=true"/>
+        <Avatar sx={{width:200,height:200}} for="photo-upload" src={src} defaultValue="https://github.com/OlgaKoplik/CodePen/blob/master/profile.jpg?raw=true"/>
         <input hidden accept="image/*" id="photo-upload" type="file" onChange={onChange}/> 
       </div>
       
