@@ -1,4 +1,4 @@
-import { Button, Card, CardActions, CardContent, CardHeader, Rating, Typography } from "@mui/material"
+import { Button, Card, CardActions, CardContent, CardHeader, CardMedia, Rating, Typography } from "@mui/material"
 import { AddShoppingCart } from '@mui/icons-material'
 import { useCartFunctions } from "../ShoppingCart/CartContext"
 import { useStyles } from "./style"
@@ -11,11 +11,10 @@ const Course = (props) => {
     const handleAddToCart = (course) => {
         addToCart(course)
     }
-    const raiseNavigateEvent = () =>{
-        props.navigateProduct(course);
-    }
+
     return (
         <Card key={course._id} className={classes.card}>
+
             <CardHeader
                 title={course.name}
                 action={
@@ -28,10 +27,15 @@ const Course = (props) => {
                     </>
                 }
             />
+            <CardMedia 
+             component="img"
+             image={course.imgURL}
+             height="150"
+             alt={course.title}>
+
+            </CardMedia>
             <CardContent>
-                <div onClick={raiseNavigateEvent}>
                 <Typography variant="h6">{course.description}</Typography>
-                </div>
             </CardContent>
             <CardActions>
                 <Rating value={course.rating} precision={0.5} readOnly />
