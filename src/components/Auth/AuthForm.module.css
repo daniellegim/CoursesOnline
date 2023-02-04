@@ -19,14 +19,14 @@
   margin-bottom: 0.5rem;
 }
 
-.control label {
+.control{
   display: block;
   color: white;
   font-weight: bold;
   margin-bottom: 0.5rem;
 }
 
-.control input {
+.control{
   font: inherit;
   background-color: #f1e1fc;
   color: #38015c;
@@ -44,7 +44,7 @@
   align-items: center;
 }
 
-.actions button {
+.actions{
   cursor: pointer;
   font: inherit;
   color: white;
@@ -54,7 +54,7 @@
   padding: 0.5rem 2.5rem;
 }
 
-.actions button:hover {
+.actions{
   background-color: #873abb;
   border-color: #873abb;
 }
@@ -67,7 +67,7 @@
   padding: 0.15rem 1.5rem;
 }
 
-.actions .toggle:hover {
+.actions {
   background-color: transparent;
   color: #ae82cc;
 }
