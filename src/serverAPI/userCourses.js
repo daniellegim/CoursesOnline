@@ -3,7 +3,7 @@ import axios from 'axios'
 export default class UserCourseServer {
 
     static getAllCourses() {
-        const userId = "111"
+        const userId = "456"
         return axios.get("/usercourses/" + userId)
                 .then(response => response.data)
                 .catch(err => err.message)
