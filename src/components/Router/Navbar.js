@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Drawer, List, ListItem, ListItemButton, ListItemText } from '@mui/material';
+import {Avatar, Drawer, List, ListItem, ListItemButton, ListItemText } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useStyles } from './style';
 import AuthContext from "../../store/auth-context"
@@ -55,12 +55,19 @@ const Navbar = () => {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                    {/* <Typography variant="h6" component="div" >
                         קורסים אונליין
-                    </Typography>
+                    </Typography> */}
+                    {authCtx.userIsLoggin === true && <Avatar src={authCtx.photoUrl}></Avatar> }
+                    {(authCtx.userIsLoggin === true)? <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                         {authCtx.email}
+                    </Typography>:<Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                    </Typography> }
+
                     <Link className={classes.authButton} to="/auth">
-                        {(authCtx.token != null)?
-                            <Button color="inherit">Logout</Button> :
+                        {(authCtx.userIsLoggin === true)?
+                            <Button color="inherit">Logout</Button>
+                             :
                             <Button color="inherit">Login</Button>}
                     </Link>
                 </Toolbar>

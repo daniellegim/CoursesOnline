@@ -53,7 +53,11 @@ const enteredPassword = passwordInputRef.current.value;
 setIsLoading(true);
 
 let url ; 
-
+if(authCtx.isLoggedin == true){
+  authCtx.userIsLoggin = false;
+  authCtx.logout();
+  history('/')
+}
 if ( isLogin){
 
 url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAhU-VD3H23eu4HmJiZBdXI7Q3Jlw36j6w';
@@ -75,22 +79,23 @@ fetch (url ,
     headers:{
       'Content-Type': 'application/json'
     }
-  }).then ( res => {
+  }).then ( (res,idToken) => {
     setIsLoading(false);
-    let updateProfileUrl = "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyAhU-VD3H23eu4HmJiZBdXI7Q3Jlw36j6w"
-    console.log(ProfileImage)
+    // let updateProfileUrl = "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyAhU-VD3H23eu4HmJiZBdXI7Q3Jlw36j6w"
+    // console.log(res)
     if(res.ok) {
-    fetch (updateProfileUrl ,
-        {
-          method: 'POST',
-          body: JSON.stringify({
-              photoUrl: ProfileImage,
-              returnSecureToken: true
-          }),
-          headers:{
-            'Content-Type': 'application/json'
-          }
-        }).then((resProf) =>{ console.log(resProf)});
+    // fetch (updateProfileUrl ,
+    //     {
+    //       method: 'POST',
+    //       body: JSON.stringify({
+    //           idToken:res.idToken,
+    //           photoUrl: ProfileImage
+    //           // returnSecureToken: true
+    //       }),
+    //       headers:{
+    //         'Content-Type': 'application/json'
+    //       }
+    //     }).then((resProf) =>{ console.log(resProf)});
     
      return res.json();
     }else{
@@ -101,10 +106,70 @@ fetch (url ,
       });
     }
   }).then( (data) => {
-    authCtx.email = data.email;
-    authCtx.userId = data.localId;
-    authCtx.login (data.idToken,data.email,data.localId);
-    history('/');
+    let updateProfileUrl;
+    updateProfileUrl = "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyAhU-VD3H23eu4HmJiZBdXI7Q3Jlw36j6w"
+    
+    if(!isLogin){
+    fetch (updateProfileUrl ,
+        {
+          method: 'POST',
+          body: JSON.stringify({
+              idToken:data.idToken,
+              photoUrl: ProfileImage
+              // returnSecureToken: true
+          }),
+          headers:{
+            'Content-Type': 'application/json'
+          }
+        }).then((resProf) =>{ 
+          console.log(resProf)
+          console.log(data)
+          authCtx.email = data.email;
+          authCtx.userId = data.localId;
+          authCtx.userIsLoggin = true;
+          authCtx.photoUrl = ProfileImage;
+          authCtx.login (data.idToken,data.email,data.localId);
+          history('/');
+        });
+      }
+      else{
+            updateProfileUrl = "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyAhU-VD3H23eu4HmJiZBdXI7Q3Jlw36j6w"
+    
+        fetch (updateProfileUrl ,
+          {
+            method: 'POST',
+            body: JSON.stringify({
+                idToken:data.idToken,
+                photoUrl: ProfileImage
+                // returnSecureToken: true
+            }),
+            headers:{
+              'Content-Type': 'application/json'
+            }
+          }).then((resProf) =>{ 
+            // console.log(resProf)
+            // console.log(data)
+            // authCtx.email = data.email;
+            // authCtx.userId = data.localId;
+            // authCtx.userIsLoggin = true;
+            // authCtx.photoUrl = ProfileImage;
+            // authCtx.login (data.idToken,data.email,data.localId);
+            return resProf.json();
+          }).then((dataProf) => {
+            authCtx.email = data.email;
+            authCtx.userId = data.localId;
+            authCtx.userIsLoggin = true;
+            authCtx.photoUrl = dataProf.photoUrl;
+            authCtx.login (data.idToken,data.email,data.localId);
+            history('/');
+          })
+        // authCtx.email = data.email;
+        // authCtx.userId = data.localId;
+        // authCtx.userIsLoggin = true;
+        // authCtx.photoUrl = data.photoUrl;
+        // authCtx.login (data.idToken,data.email,data.localId);
+        // history('/');
+      }
   }).catch (err => {
     alert (err.message);
   });

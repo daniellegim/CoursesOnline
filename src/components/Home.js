@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material"
+import {Typography, Grid } from "@mui/material"
 import { useEffect, useState } from "react"
 import CourseServer from "../serverAPI/course"
 import CoursesList from "./Course/CoursesList"
@@ -35,9 +35,12 @@ const Home = () => {
     }
 
     return (
+
         <Grid container justifyContent="center" spacing={2} sx={{ marginTop: "1em" }}>
+
             <Grid item xs={3} />
             <Grid item xs={5}>
+            <Typography variant="h6" component="div">קורסים אונליין</Typography>
                 <Search courses={courses} filterCourses={filterCoursesByName} />
             </Grid>
             <Grid item xs={2}>
@@ -47,6 +50,7 @@ const Home = () => {
                 <ShoppingCart />
             </Grid>
             <Grid item xs={10}>
+
                 <CoursesList courses={filteredCourses} />
             </Grid>
         </Grid>
