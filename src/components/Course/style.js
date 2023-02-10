@@ -30,6 +30,20 @@ export const useStyles = makeStyles((theme) =>
             justifyItems:"center",
             justifyContent:"center",
             textAlign:"center"
+        },
+        imageCourseDiv:{
+            display:"flex",
+            justifyItems:"center",
+            justifyContent:"center",
+            textAlign:"center",
+            width: "100%",
+            height:"20rem"
+        },
+        imageCourse:{
+            // height: "100%",
+            width: "100%",
+            objectFit:"cover"
+            // object-fit: "cover"
         }
     })
 );

@@ -11,6 +11,7 @@ const Course = (props) => {
     const course = props.course
     const { addToCart } = useCartFunctions()
     const [expanded, setExpanded] = React.useState("description");
+    // const backGroundImage = "background-image: url('" + course.imgURL + "');background-size: cover;"
     const handleAddToCart = (course) => {
         addToCart(course)
     }
@@ -35,9 +36,9 @@ const Course = (props) => {
                     }
                 />
                 <div
-                className={classes.centerCss} 
+                className={classes.imageCourseDiv} 
                 >
-                    <img src ={course.imgURL} alt={course.title}></img>
+                    <img className={classes.imageCourse}  src ={course.imgURL} alt={course.title}></img>
                 </div>
                 <CardContent>
                     <Card >
