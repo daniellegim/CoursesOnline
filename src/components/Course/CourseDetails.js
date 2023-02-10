@@ -1,10 +1,10 @@
-import {Grid, Container,Button, Card, CardActions, CardContent, CardHeader, Accordion,AccordionSummary,AccordionDetails, Rating, Typography } from "@mui/material"
+import {Icon,Grid, Container,Button, Card, CardActions, CardContent, CardHeader, Accordion,AccordionSummary,AccordionDetails, Rating, Typography } from "@mui/material"
 import { AddShoppingCart } from '@mui/icons-material'
 // import { Grid } from "@mui/material"
 import { useCartFunctions } from "../ShoppingCart/CartContext"
 import { useStyles } from "./style"
 import React from "react"
-import { ArrowForwardIosSharp } from "@mui/icons-material"
+import { ArrowForwardIosSharp, PaidOutlined,CalendarMonthOutlined,PersonOutlineOutlined } from "@mui/icons-material"
 
 const Course = (props) => {
     const classes = useStyles()
@@ -19,7 +19,7 @@ const Course = (props) => {
     }
 
     return (
-        <Container>
+        <Container className={classes.containerClass}>
             <Card key={course._id} className={classes.card} variant="outlined" >
 
                 <CardHeader
@@ -40,18 +40,21 @@ const Course = (props) => {
                     <img src ={course.imgURL} alt={course.title}></img>
                 </div>
                 <CardContent>
-                    <Card   >
+                    <Card >
                         <CardContent className={classes.bannerCard}>
                         <Grid container spacing={2} sx={{ overflow: "auto", maxHeight: "73vh" }}>
-                        <Grid key="duration" item xs={4}>
-                            <Typography variant="h5">{course.duration}</Typography>
-                        </Grid>
-                        <Grid key="Level" item xs={4}>
-                            <Typography variant="h5">{(course.level)?course.level.name:"Not Provide"}</Typography>
-                        </Grid>
-                        <Grid key="Price" item xs={4}>
-                        <Typography variant="h5">{course.price}</Typography>
-                        </Grid>
+                            <Grid className={classes.bannerItem} key="duration" item xs={4}>
+                                <CalendarMonthOutlined className={classes.iconClass} fontSize="large"></CalendarMonthOutlined>
+                                <Typography variant="h5">{course.duration}</Typography>
+                            </Grid>
+                            <Grid className={classes.bannerItem} key="Level" item xs={4}>
+                                    <PersonOutlineOutlined className={classes.iconClass} fontSize="large"></PersonOutlineOutlined>
+                                    <Typography variant="h5">{(course.level)?course.level.name:"Not Provide"}</Typography>
+                            </Grid>
+                            <Grid className={classes.bannerItem} key="Price" item xs={4}>
+                                <PaidOutlined className={classes.iconClass} fontSize="large"></PaidOutlined>
+                                <Typography variant="h5">{course.price}</Typography>
+                            </Grid>
                         </Grid>
                         </CardContent>
                     </Card>
