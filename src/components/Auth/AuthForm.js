@@ -5,11 +5,12 @@ import classes from './AuthForm.module.css';
 import { TextField, Avatar, Button,Container,Card,CardContent,CardHeader } from '@mui/material';
 import ImgUpload from "../Profile/ImgUpload"
 
-const AuthForm = () => {
+const AuthForm = (props) => {
 
   const emailInputRef = useRef();
   const passwordInputRef = useRef(); 
   const uploadImageRef = useRef();
+  const userNameRef = useRef();
   const history = useNavigate();
   const authCtx = useContext (AuthContext); 
   const [isLogin, setIsLogin] = useState(true);
@@ -45,7 +46,7 @@ const submitHandler = (event) =>{
 
 const enteredEmail = emailInputRef.current.value;
 const enteredPassword = passwordInputRef.current.value;
-
+const enteredUserName  = (userNameRef && userNameRef.current)?userNameRef.current.value:"";
 
 
 // optional add validation 
@@ -53,8 +54,10 @@ const enteredPassword = passwordInputRef.current.value;
 setIsLoading(true);
 
 let url ; 
-if(authCtx.isLoggedin == true){
+if(props.Logout === false){
+  console.log("Tro")
   authCtx.userIsLoggin = false;
+  authCtx.isLogout = false;
   authCtx.logout();
   history('/')
 }
@@ -81,22 +84,7 @@ fetch (url ,
     }
   }).then ( (res,idToken) => {
     setIsLoading(false);
-    // let updateProfileUrl = "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyAhU-VD3H23eu4HmJiZBdXI7Q3Jlw36j6w"
-    // console.log(res)
     if(res.ok) {
-    // fetch (updateProfileUrl ,
-    //     {
-    //       method: 'POST',
-    //       body: JSON.stringify({
-    //           idToken:res.idToken,
-    //           photoUrl: ProfileImage
-    //           // returnSecureToken: true
-    //       }),
-    //       headers:{
-    //         'Content-Type': 'application/json'
-    //       }
-    //     }).then((resProf) =>{ console.log(resProf)});
-    
      return res.json();
     }else{
       return res.json ().then((data) => {
@@ -115,7 +103,8 @@ fetch (url ,
           method: 'POST',
           body: JSON.stringify({
               idToken:data.idToken,
-              photoUrl: ProfileImage
+              photoUrl: ProfileImage,
+              displayName:enteredUserName
               // returnSecureToken: true
           }),
           headers:{
@@ -128,6 +117,9 @@ fetch (url ,
           authCtx.userId = data.localId;
           authCtx.userIsLoggin = true;
           authCtx.photoUrl = ProfileImage;
+          authCtx.userName = enteredUserName;
+          authCtx.token = data.idToken;
+          authCtx.isLogout = false;
           authCtx.login (data.idToken,data.email,data.localId);
           history('/');
         });
@@ -140,35 +132,26 @@ fetch (url ,
             method: 'POST',
             body: JSON.stringify({
                 idToken:data.idToken,
-                photoUrl: ProfileImage
+                photoUrl: ProfileImage,
+                displayName: enteredUserName
                 // returnSecureToken: true
             }),
             headers:{
               'Content-Type': 'application/json'
             }
           }).then((resProf) =>{ 
-            // console.log(resProf)
-            // console.log(data)
-            // authCtx.email = data.email;
-            // authCtx.userId = data.localId;
-            // authCtx.userIsLoggin = true;
-            // authCtx.photoUrl = ProfileImage;
-            // authCtx.login (data.idToken,data.email,data.localId);
             return resProf.json();
           }).then((dataProf) => {
             authCtx.email = data.email;
             authCtx.userId = data.localId;
             authCtx.userIsLoggin = true;
             authCtx.photoUrl = dataProf.photoUrl;
+            authCtx.userName = dataProf.displayName
+            authCtx.isLogout = false;
+            authCtx.token = data.idToken;
             authCtx.login (data.idToken,data.email,data.localId);
             history('/');
           })
-        // authCtx.email = data.email;
-        // authCtx.userId = data.localId;
-        // authCtx.userIsLoggin = true;
-        // authCtx.photoUrl = data.photoUrl;
-        // authCtx.login (data.idToken,data.email,data.localId);
-        // history('/');
       }
   }).catch (err => {
     alert (err.message);
@@ -181,6 +164,11 @@ fetch (url ,
       <CardHeader>{isLogin ? 'Login' : 'Sign Up'}</CardHeader>
         <CardContent className={classes.centerItemClass}>
         <form onSubmit={submitHandler}>
+        {isLogin === false && 
+        <div>
+        <TextField variant="outlined" label="User Name"  type="text" id='userName' required  inputRef = {userNameRef}/>
+      </div>
+        }
       {isLogin === false && 
       <div>
       <ImgUpload onChange={photoUpload} src={ProfileImage}/>

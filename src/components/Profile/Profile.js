@@ -1,6 +1,113 @@
+import { useState , useRef, useContext } from 'react';
+import AuthContext from '../../store/auth-context';
+import { useNavigate } from 'react-router-dom';
+import classes from '../Auth/AuthForm.module.css';
+import { TextField, Avatar, Button,Container,Card,CardContent,CardHeader } from '@mui/material';
+import ImgUpload from "../Profile/ImgUpload"
 const Profile = () => {
 
+  const emailInputRef = useRef();
+  const passwordInputRef = useRef(); 
+  const uploadImageRef = useRef();
+  const userNameRef = useRef();
+  const history = useNavigate();
+  const authCtx = useContext (AuthContext); 
+  const [isLogin, setIsLogin] = useState(true);
+  const [isChanged, setIsChanged] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [ProfileImage = authCtx.photoUrl, setProfileImage] = useState();
+  const detailsChange = () =>{
+    const enteredUser = (userNameRef && userNameRef.current)?userNameRef.current.value:"";
+    const newPhotoUrl = (ProfileImage)?ProfileImage:"";
+    const ExistsUserName = (authCtx.userName)?authCtx.userName:"";
+    const ExistsProfileImage = (authCtx.photoUrl)?authCtx.photoUrl:"";
+    
+    if(ExistsUserName.indexOf(enteredUser) < 0 ||
+       ExistsProfileImage.indexOf(newPhotoUrl) < 0){
+        setIsChanged(true);
+        return;
+       }
+       setIsChanged(false);
+       return
+  }
+  const photoUpload = e =>{
+    e.preventDefault();
+    const reader = new FileReader();
+    const file = e.target.files[0];
+    reader.onloadend = () => {
+        console.log(reader);
+        console.log(file)
+      setProfileImage(reader.result)
+      setIsChanged(true);
+    }
+    reader.readAsDataURL(file);
+  }
+
+  const switchAuthModeHandler = () => {
+    setIsLogin((prevState) => !prevState);
+  };
+  const getProfileImage = (file) =>{
+    console.log(file)
+    const enteredImage = file.target.value;
+    // console.log(uploadImageRef)
+    // console.log(enteredImage)
+    setProfileImage(enteredImage)
+    console.log(ProfileImage)
+
+
+  }
+const submitHandler = (event) =>{
+  event.preventDefault();
+
+// optional add validation 
+setIsLoading(true);
+let url ; 
+const enteredUser = (userNameRef && userNameRef.current)?userNameRef.current.value:"";
+const newPhotoUrl = (ProfileImage)?ProfileImage:"";
+url = "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyAhU-VD3H23eu4HmJiZBdXI7Q3Jlw36j6w";
+console.log(authCtx.token)
+fetch (url ,
+    {
+      method: 'POST',
+      body: JSON.stringify({
+          idToken:authCtx.token,
+          photoUrl: ProfileImage,
+          displayName:enteredUser
+          // returnSecureToken: true
+      }),
+      headers:{
+        'Content-Type': 'application/json'
+      }
+    }).then((resProf) =>{ 
+        console.log(resProf)
+      authCtx.photoUrl = ProfileImage;
+      authCtx.userName = enteredUser;
+      history('/');
+    })
 }
+
+  return (
+    <Container>
+      <Card>
+      <CardHeader className={classes.centerItemClass} title="Profile"></CardHeader>
+        <CardContent className={classes.centerItemClass}>
+        <form onSubmit={submitHandler}>
+            <ImgUpload onChange={photoUpload} src={ProfileImage}/>
+        <div>
+            <TextField onInput={detailsChange} variant="outlined" label="User Name"  type="text" id='userName' defaultValue={authCtx.userName} required  inputRef = {userNameRef}/>
+        </div>
+        <div className={classes.submitButtonClass}>
+          {!isLoading && isChanged && <Button type="submit" variant='contained'>Save Details</Button>}
+          {
+            isLoading && <p> Loading ... </p>
+          }
+          </div>
+      </form>
+        </CardContent>
+      </Card>
+    </Container>
+  );
+};
 
 export default Profile
 

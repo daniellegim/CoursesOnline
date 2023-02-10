@@ -13,8 +13,10 @@ import AuthContext from "../../store/auth-context"
 
 const Navbar = () => {
     const classes = useStyles()
-    const authCtx = useContext (AuthContext); 
+    const authCtx = useContext (AuthContext);
+    const [isLogout  , setIsLogout] = useState(authCtx.isLogout ); 
     const [openDrawer, setOpenDrawer] = useState(false)
+    console.log(authCtx)
     const menu = [
         {
             path: "/",
@@ -33,7 +35,10 @@ const Navbar = () => {
             text: "מנהלן"
         }
     ]
-
+    const logOut = () =>{
+        setIsLogout(true);
+        authCtx.isLogout = true;
+    }
     const toggleDrawer = (open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
             return;
@@ -58,17 +63,17 @@ const Navbar = () => {
                     {/* <Typography variant="h6" component="div" >
                         קורסים אונליין
                     </Typography> */}
-                    {authCtx.userIsLoggin === true && <Avatar src={authCtx.photoUrl}></Avatar> }
-                    {(authCtx.userIsLoggin === true)? <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                         {authCtx.email}
+                    {authCtx.isLogout === false && <Avatar src={authCtx.photoUrl}></Avatar> }
+                    {(isLogout === false)? <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                         {authCtx.userName}
                     </Typography>:<Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                     </Typography> }
 
                     <Link className={classes.authButton} to="/auth">
-                        {(authCtx.userIsLoggin === true)?
-                            <Button color="inherit">Logout</Button>
+                        {(isLogout === false)?
+                            <Button color="inherit" onClick={logOut}>Logout</Button>
                              :
-                            <Button color="inherit">Login</Button>}
+                            <Button color="inherit" >Login</Button>}
                     </Link>
                 </Toolbar>
             </AppBar>

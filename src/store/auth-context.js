@@ -7,6 +7,8 @@ const AuthContext = React.createContext({
     token: '',
     userIsLoggin: false,
     photoUrl:'', 
+    isLogout:true,
+    userName:'',
     login: (token,email,localId) => {},
     logout: () => {},
 });
