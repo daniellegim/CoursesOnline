@@ -1,10 +1,11 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { Badge, Button, Dialog, DialogActions, DialogContent, DialogTitle, Fab, Typography } from "@mui/material"
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import { useCartContext, useCartFunctions } from "./CartContext"
 import CoursesListCart from "./CoursesListCart"
 import UserCourseServer from "../../serverAPI/userCourses"
 import { LoadingButton } from "@mui/lab"
+import AuthContext from "../../store/auth-context"
 
 const ShoppingCart = () => {
     const [openDialog, setOpenDialog] = useState(false)
@@ -12,6 +13,7 @@ const ShoppingCart = () => {
     const [saveButton, setSaveButton] = useState({ text: "קנה", color: "primary" })
     const coursesInCart = useCartContext()
     const { clearCart } = useCartFunctions()
+    const authCtx = useContext(AuthContext)
     const totalPrice = coursesInCart.reduce((prev, current) => {
         return prev + current.price
     }, 0)
@@ -24,7 +26,7 @@ const ShoppingCart = () => {
         if (event.currentTarget.id === "yes") {
             setLoadingSave(true)
             const courses = coursesInCart.map(course => ({
-                userId: "456",
+                userId: authCtx.userId,
                 courseId: course._id
             }))
 

@@ -1,14 +1,16 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import CoursesList from "../Course/CoursesList"
 import UserCourseServer from "../../serverAPI/userCourses"
 import { Grid, Typography } from "@mui/material"
+import AuthContext from "../../store/auth-context"
 
 const UserCourses = () => {
     const [courses, setCourses] = useState([])
+    const authCtx = useContext(AuthContext)
 
     useEffect(() => {
         const getData = async () => {
-            const data = await UserCourseServer.getAllCourses()
+            const data = await UserCourseServer.getAllCourses(authCtx.userId)
             const courses = data.map(course => course.courseId)
 
             setCourses(courses)

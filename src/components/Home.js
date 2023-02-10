@@ -16,7 +16,7 @@ const Home = () => {
         const getData = async () => {
             const categories = filters["category"]?.value.map(category => category._id)
 
-            const data = await CourseServer.getAllCourses(page, categories, filters["price"], filters["rating"]?.value)
+            const data = await CourseServer.getAllCourses(null, page, categories, filters["price"], filters["rating"]?.value)
             const filtered = page === 1 ? data : [...filteredCourses, ...data]
 
             setCourses([...courses, ...data])
@@ -30,8 +30,8 @@ const Home = () => {
         setPage(prev => prev + 1)
     }
 
-    const filterCoursesByName = (value) => {
-        const filtered = courses.filter(course => course.name.toLowerCase().includes(value.toLowerCase()))
+    const filterCoursesByName = async (value) => {
+        const filtered = await CourseServer.getAllCourses(value)
         setFilteresCourses(filtered)
     }
 

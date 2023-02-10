@@ -2,9 +2,10 @@ import axios from 'axios'
 
 export default class CourseServer {
 
-    static getAllCourses(page, categories, price, rating) {
+    static getAllCourses(name, page, categories, price, rating) {
         return axios.get("/courses", {
             params: {
+                name: name,
                 page: page,
                 categories: categories,
                 price: price,
