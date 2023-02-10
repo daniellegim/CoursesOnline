@@ -6,7 +6,6 @@ import SliderFilter from './Slider'
 import RatingFilter from './Rating'
 import AutocompleteFilter from './Autocomplete'
 import CategoryServer from '../../serverAPI/category'
-import CourseServer from '../../serverAPI/course'
 
 const Filter = (props) => {
     const [openDialog, setOpenDialog] = useState(false)
@@ -51,15 +50,15 @@ const Filter = (props) => {
         setOpenDialog(false)
     }
 
-    const handleCheckChange = (event, listName) => {
-        setFilters(prev => ({
-            ...prev,
-            [listName]: {
-                ...prev[listName],
-                [event.target.name]: event.target.checked
-            }
-        }))
-    }
+    // const handleCheckChange = (event, listName) => {
+    //     setFilters(prev => ({
+    //         ...prev,
+    //         [listName]: {
+    //             ...prev[listName],
+    //             [event.target.name]: event.target.checked
+    //         }
+    //     }))
+    // }
 
     const handleSliderChange = (event, newValue) => {
         setFilters(prev => ({

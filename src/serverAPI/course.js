@@ -2,15 +2,10 @@ import axios from 'axios'
 
 export default class CourseServer {
 
-    static getAllCourses() {
-        return axios.get("/courses")
-            .then(response => response.data)
-            .catch(err => err.message)
-    }
-
-    static getFilteredCourses(categories, price, rating) {
-        return axios.get("/courses/filtered", {
+    static getAllCourses(page, categories, price, rating) {
+        return axios.get("/courses", {
             params: {
+                page: page,
                 categories: categories,
                 price: price,
                 rating: rating

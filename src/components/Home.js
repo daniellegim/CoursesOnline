@@ -9,29 +9,35 @@ import ShoppingCart from "./ShoppingCart/ShoppingCart"
 const Home = () => {
     const [courses, setCourses] = useState([])
     const [filteredCourses, setFilteresCourses] = useState([])
+    const [filters, setFilters] = useState({})
+    const [page, setPage] = useState(1)
 
     useEffect(() => {
         const getData = async () => {
-            const data = await CourseServer.getAllCourses()
+            const categories = filters["category"]?.value.map(category => category._id)
 
-            setCourses(data)
-            setFilteresCourses(data)
+            const data = await CourseServer.getAllCourses(page, categories, filters["price"], filters["rating"]?.value)
+            const filtered = page === 1 ? data : [...filteredCourses, ...data]
+
+            setCourses([...courses, ...data])
+            setFilteresCourses(filtered)
         }
 
         getData()
-    }, [])
+    }, [page, filters])
+
+    const handleLoadMore = () => {
+        setPage(prev => prev + 1)
+    }
 
     const filterCoursesByName = (value) => {
         const filtered = courses.filter(course => course.name.toLowerCase().includes(value.toLowerCase()))
         setFilteresCourses(filtered)
     }
 
-    const filterCourses = async (filters) => {
-        const categories = filters["category"]?.value.map(category => category._id)
-
-        const filtered = await CourseServer.getFilteredCourses(categories, filters["price"], filters["rating"]?.value)
-
-        setFilteresCourses(filtered)
+    const filterCourses = async (filter) => {
+        setFilters(filter)
+        setPage(1)
     }
 
     return (
@@ -50,9 +56,8 @@ const Home = () => {
                 <ShoppingCart />
             </Grid>
             <Grid item xs={10}>
-
-                <CoursesList courses={filteredCourses} />
-            </Grid>
+                <CoursesList courses={filteredCourses} handleLoadMore={handleLoadMore} />
+            </Grid>S
         </Grid>
     )
 }

@@ -11,9 +11,10 @@ const Course = (props) => {
     const handleAddToCart = (course) => {
         addToCart(course)
     }
-    const raiseNavigateEvent = () =>{
+    const raiseNavigateEvent = () => {
         props.navigateProduct(course);
     }
+
     return (
         <Card key={course._id} className={classes.card}>
             <CardHeader
@@ -28,10 +29,10 @@ const Course = (props) => {
                     </>
                 }
             />
-            <CardContent>
-                <div onClick={raiseNavigateEvent}>
-                <Typography variant="h6">{course.description}</Typography>
-                </div>
+            <CardContent onClick={raiseNavigateEvent}>
+                <Typography variant="h6">
+                    {course.description.length > 100 ? `${course.description.substring(0, 100)}...` : course.description}
+                </Typography>
             </CardContent>
             <CardActions>
                 <Rating value={course.rating} precision={0.5} readOnly />
