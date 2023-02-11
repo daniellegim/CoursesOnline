@@ -1,19 +1,20 @@
-import { useState,useContext } from "react"
+import { useContext, useState } from "react"
 import { Badge, Button, Dialog, DialogActions, DialogContent, DialogTitle, Fab, Typography } from "@mui/material"
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import { useCartContext, useCartFunctions } from "./CartContext"
 import CoursesListCart from "./CoursesListCart"
 import UserCourseServer from "../../serverAPI/userCourses"
 import { LoadingButton } from "@mui/lab"
-import AuthContext from '../../store/auth-context';
+import AuthContext from "../../store/auth-context"
+import { Link } from "react-router-dom"
 
 const ShoppingCart = () => {
     const [openDialog, setOpenDialog] = useState(false)
     const [loadingSave, setLoadingSave] = useState(false)
-    const authCtx = useContext (AuthContext); 
     const [saveButton, setSaveButton] = useState({ text: "קנה", color: "primary" })
     const coursesInCart = useCartContext()
     const { clearCart } = useCartFunctions()
+    const authCtx = useContext(AuthContext)
     const totalPrice = coursesInCart.reduce((prev, current) => {
         return prev + current.price
     }, 0)
@@ -70,7 +71,14 @@ const ShoppingCart = () => {
                 <DialogContent>
                     <CoursesListCart courses={coursesInCart} />
                     {coursesInCart.length ?
-                        <Typography variant="h6" sx={{ marginTop: "1em", marginLeft: "9em" }}>סה"כ לתשלום: {totalPrice}</Typography>
+                        <Typography variant="h6" sx={{ marginTop: "1em", marginLeft: "9em" }}>סה"כ לתשלום: {totalPrice}₪</Typography>
+                        : null
+                    }
+                    {coursesInCart.length && !authCtx.userId ?
+                        <Typography sx={{ marginTop: "1em", marginLeft: "5em" }}>
+                            נראה שעדיין לא התחברת, 
+                            <Link to="/auth" style={{ color: "blue" }}>התחבר כדי להמשיך</Link>
+                        </Typography>
                         : null
                     }
                 </DialogContent>
@@ -79,6 +87,7 @@ const ShoppingCart = () => {
                         <Button id="no" onClick={handleCloseDialog}>בטל</Button>
                         <LoadingButton
                             id="yes"
+                            disabled={!authCtx.userId}
                             loading={loadingSave}
                             loadingPosition="center"
                             variant="contained"

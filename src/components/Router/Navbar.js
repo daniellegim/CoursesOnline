@@ -6,21 +6,21 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import {Avatar, Drawer, List, ListItem, ListItemButton, ListItemText } from '@mui/material';
+import { Avatar, Drawer, List, ListItem, ListItemButton, ListItemText } from '@mui/material';
 import { Link,useNavigate } from 'react-router-dom';
 import { useStyles } from './style';
 import AuthContext from "../../store/auth-context"
-import { FormatColorReset } from '@mui/icons-material';
+import AdminServer from '../../serverAPI/admin';
 
 const Navbar = () => {
 
  
     const classes = useStyles()
-    const authCtx = useContext (AuthContext);
+    const authCtx = useContext(AuthContext)
+    const [openDrawer, setOpenDrawer] = useState(false)
+    const [admin, setAdmin] = useState(false)
     const isLogout = authCtx.isLogout;
     const history = useNavigate();
-    // const [isLogout  , setIsLogout] = useState(authCtx.isLogout ); 
-    const [openDrawer, setOpenDrawer] = useState(false)
     const menu = [
         {
             path: "/",
@@ -36,6 +36,17 @@ const Navbar = () => {
             path: "/profile",
             text: "פרופיל",
             isNeedSignIn:true
+        }
+    ]
+
+    const menuAdmin = [
+        {
+            path: "/",
+            text: "דף הבית"
+        },
+        {
+            path: "/profile",
+            text: "פרופיל"
         },
         {
             path: "/admin",
@@ -43,22 +54,33 @@ const Navbar = () => {
             isNeedSignIn:true
         }
     ]
-    useEffect(()=>{
-        // setIsLogout(authCtx.isLogout )
-    })
+
+    useEffect(() => {
+        const getData = async () => {
+            if (authCtx.userId) {
+                const admin = await AdminServer.getAdmin(authCtx.userId)
+                setAdmin(admin.length > 0)
+            }
+        }
+
+        getData()
+    }, [authCtx.userId])
+
     const logoutAction = () =>{
-        console.log("Yay")
+        // setIsLogout(true);
         authCtx.isLogout = true;
         authCtx.logout();
         history('/');
     }
+
     const toggleDrawer = (open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
             return;
         }
 
         setOpenDrawer(open)
-    };
+    }
+
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
@@ -104,21 +126,32 @@ const Navbar = () => {
                         onKeyDown={toggleDrawer(false)}
                     >
                         <List>
-                            {menu.map((item, index) => (
-                                (item.isNeedSignIn == false || (item.isNeedSignIn && isLogout == false ) )&&
-                                <Link className={classes.menu} to={item.path} key={index}>
-                                    <ListItem key={item.text} disablePadding>
-                                        <ListItemButton>
-                                            <ListItemText primary={item.text} />
-                                        </ListItemButton>
-                                    </ListItem>
-                                </Link>
-                            ))}
+                            {admin ?
+                                (menuAdmin.map((item, index) => (
+                                    <Link className={classes.menu} to={item.path} key={index}>
+                                        <ListItem key={item.text} disablePadding>
+                                            <ListItemButton>
+                                                <ListItemText primary={item.text} />
+                                            </ListItemButton>
+                                        </ListItem>
+                                    </Link>
+                                ))) :
+                                (menu.map((item, index) => (
+                                    (item.isNeedSignIn == false || (item.isNeedSignIn && isLogout == false ) ) && 
+                                    <Link className={classes.menu} to={item.path} key={index}>
+                                        <ListItem key={item.text} disablePadding>
+                                            <ListItemButton>
+                                                <ListItemText primary={item.text} />
+                                            </ListItemButton>
+                                        </ListItem>
+                                    </Link>
+                                )))
+                            }
                         </List>
                     </Box>
                 </Drawer>
             </React.Fragment>
-        </Box>
+        </Box >
     );
 }
 

@@ -8,7 +8,7 @@ const DeleteCourse = (props) => {
     const [course, setCourse] = useState(props.course)
     const [categories, setCategories] = useState([])
     const [loadingSave, setLoadingSave] = useState(false)
-    const [saveButton, setSaveButton] = useState({ text: "שמור", color: "primary" })
+    const [saveButton, setSaveButton] = useState({ text: "מחק", color: "primary" })
     const courseFields = ["name", "description", "price", "category", "rating", "author"]
 
     useEffect(() => {
@@ -37,7 +37,6 @@ const DeleteCourse = (props) => {
     const handleSave = async () => {
         setLoadingSave(true)
 
-        console.log(course)
         const data = await CourseServer.deleteCourse(course)
 
         if (data.status === 200) {

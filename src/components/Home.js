@@ -1,4 +1,4 @@
-import {Typography, Grid,CircularProgress,Backdrop } from "@mui/material"
+import { Grid, CircularProgress, Backdrop } from "@mui/material"
 import { useEffect, useState } from "react"
 import CourseServer from "../serverAPI/course"
 import CoursesList from "./Course/CoursesList"
@@ -17,44 +17,38 @@ const Home = () => {
         const getData = async () => {
             const categories = filters["category"]?.value.map(category => category._id)
 
-            const data = await CourseServer.getAllCourses(page, categories, filters["price"], filters["rating"]?.value)
+            const data = await CourseServer.getAllCourses(null, page, categories, filters["price"], filters["rating"]?.value)
             const filtered = page === 1 ? data : [...filteredCourses, ...data]
 
             setCourses([...courses, ...data])
-            setLoading(false);
             setFilteresCourses(filtered)
+            setLoading(false)
         }
 
         getData()
     }, [page, filters])
 
     const handleLoadMore = () => {
-        setLoading(true)
         setPage(prev => prev + 1)
-        setLoading(false)
     }
 
-    const filterCoursesByName = (value) => {
+    const filterCoursesByName = async (value) => {
         setLoading(true)
-        const filtered = courses.filter(course => course.name.toLowerCase().includes(value.toLowerCase()))
+        const filtered = await CourseServer.getAllCourses(value)
         setFilteresCourses(filtered)
         setLoading(false)
     }
 
     const filterCourses = async (filter) => {
-        setLoading(true)
         setFilters(filter)
         setPage(1)
-        setLoading(false);
     }
 
     return (
-        
-        <Grid container justifyContent="center" spacing={2} sx={{ marginTop: "1em" }}>
 
+        <Grid container justifyContent="center" spacing={2} sx={{ marginTop: "1em" }}>
             <Grid item xs={3} />
             <Grid item xs={5}>
-            <Typography variant="h6" component="div">קורסים אונליין</Typography>
                 <Search courses={courses} filterCourses={filterCoursesByName} />
             </Grid>
             <Grid item xs={2}>
@@ -64,13 +58,13 @@ const Home = () => {
                 <ShoppingCart />
             </Grid>
             <Grid item xs={10}>
-            {(isLoading)? 
-            <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open >
-                <CircularProgress color="inherit" size="10rem" /> 
-            </Backdrop>
-            :
-                <CoursesList courses={filteredCourses} handleLoadMore={handleLoadMore} />
-            }
+                {(isLoading) ?
+                    <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open>
+                        <CircularProgress color="inherit" size="5rem" />
+                    </Backdrop>
+                    :
+                    <CoursesList courses={filteredCourses} handleLoadMore={handleLoadMore} />
+                }
             </Grid>
         </Grid>
     )

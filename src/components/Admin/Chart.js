@@ -49,7 +49,6 @@ const CategoryChart = () => {
         }
     };
 
-    console.log(categoryCount)
     const labels = categoryCount?.map(c => c.category[0].name)
 
     const data = {
