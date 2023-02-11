@@ -37,7 +37,7 @@ export const useStyles = makeStyles((theme) =>
             justifyContent:"center",
             textAlign:"center",
             width: "100%",
-            height:"20rem"
+            height:"12rem"
         },
         imageCourse:{
             // height: "100%",

@@ -1,100 +1,103 @@
-import { Button, Grid, Typography } from "@mui/material"
 import { useState } from "react"
+import { Button, Grid, Paper, Stack, Tab, Tabs } from "@mui/material"
 import CategoryChart from "./Chart"
 import CreateCourse from "./CreateCourse"
 import ListManageCourse from "./ListManageCourse"
 import EditCourse from "./EditCourse"
 import DeleteCourse from "./DeleteCourse"
+import CreateCategory from "./CreateCategory"
+import EditCategory from "./EditCategory"
 
 const Admin = () => {
+    const [currentTab, setCurrentTab] = useState(0)
     const [selectedCourse, setselectedCourse] = useState({})
-    const [displayForm, setDisplayForm] = useState(false)
-    const [displayListForm, setDisplayListForm] = useState(false)
     const [displayEditForm, setDisplayEditForm] = useState(false)
     const [displayDeleteForm, setDisplayDeleteForm] = useState(false)
+    const [displayAddCourse, setDisplayAddCourse] = useState(false)
+    const [displayAddCategory, setDisplayAddCategory] = useState(false)
+    const [displayEditCategory, setDisplayEditCategory] = useState(false)
 
-    const handleCreateButton = () => {
-        setDisplayForm(true)
-        setDisplayListForm(false);
-        setDisplayEditForm(false);
-        setDisplayDeleteForm(false);
+    const handleChangeTab = (event, newValue) => {
+        setCurrentTab(newValue)
     }
-    const handleListButton = () => {
-        setDisplayForm(false)
-        setDisplayListForm(true);
-        setDisplayEditForm(false);
-        setDisplayDeleteForm(false);
-    }
+
     const handleEditButton = (course) => {
-        setDisplayForm(false)
-        setDisplayListForm(false);
-        setDisplayEditForm(true);
-        setDisplayDeleteForm(false);
+        setDisplayEditForm(true)
+        setDisplayDeleteForm(false)
         setselectedCourse(course)
     }
+
     const handleDeleteButton = (course) => {
-        setDisplayForm(false)
-        setDisplayListForm(false);
-        setDisplayEditForm(false);
-        setDisplayDeleteForm(true);
+        setDisplayEditForm(false)
+        setDisplayDeleteForm(true)
         setselectedCourse(course)
     }
 
     const handleCancel = () => {
-        setDisplayForm(false)
-        setDisplayListForm(false);
-        setDisplayEditForm(false);
-        setDisplayDeleteForm(false);
+        setDisplayAddCourse(false)
+        setDisplayEditForm(false)
+        setDisplayDeleteForm(false)
+    }
+
+    const handleAddCourse = () => {
+        setDisplayAddCourse(true)
+    }
+
+    const handleAddCategory = () => {
+        setDisplayAddCategory(true)
+        setDisplayEditCategory(false)
+    }
+
+    const handleEditCategory = () => {
+        setDisplayEditCategory(true)
+        setDisplayAddCategory(false)
     }
 
     return (
-        <Grid container justifyContent="center" spacing={2} sx={{ marginTop: "1em" }}>
-            <Grid item xs={5.2} />
-            <Grid item xs={2.8}>
-                {displayForm ?
-                    <Typography variant="h4">הוספת קורס</Typography>
-                    :
-                    <Button variant="contained" onClick={handleCreateButton}>הוספת קורס חדש</Button>
-                }
-                {displayListForm ?
-                    <Typography variant="h4">ניהול קורסים</Typography>
-                    :
-                    <Button variant="contained" onClick={handleListButton}>ניהול קורסים</Button>
-                }
-
-                {!displayListForm && !displayForm && !displayEditForm && !displayDeleteForm?
-                    <Typography variant="h4">סטייסטיקות</Typography>
-                    :
-                    <Button variant="contained" onClick={handleCancel}>לסטייסטיקות</Button>
-                }
-            </Grid>
-            <Grid item xs={4} />
-            {displayForm &&
-                <Grid item xs={4}>
-                    <CreateCourse handleCancel={handleCancel} />
-                </Grid>
-            }
-            {displayListForm &&
-                <Grid item xs={4}>
-                    <ListManageCourse handleEdit={handleEditButton} handleDelete={handleDeleteButton}/>
-                </Grid>
-            }
-            {!displayForm && !displayListForm && !displayEditForm && !displayDeleteForm &&
+        <Grid container justifyContent="center" spacing={2} sx={{ marginTop: "0.5em" }}>
+            <Paper sx={{ width: "100%" }}>
+                <Tabs value={currentTab} onChange={handleChangeTab} centered>
+                    <Tab label="סטטיסטיקות" />
+                    <Tab label="ניהול קורסים" />
+                    <Tab label="ניהול קטגוריות" />
+                </Tabs>
+            </Paper>
+            {currentTab === 0 ? (
                 <Grid item>
                     <CategoryChart />
                 </Grid>
-            }
-            {displayEditForm &&
-                <Grid item>
-                    <EditCourse course={selectedCourse} handleCancel={handleCancel} />
+            ) : currentTab === 1 ? (
+                <Grid item xs={(displayAddCourse || displayEditForm || displayDeleteForm) ? 4 : 12}>
+                    {displayAddCourse ?
+                        <CreateCourse handleCancel={handleCancel} />
+                        : (displayEditForm ?
+                            <EditCourse course={selectedCourse} handleCancel={handleCancel} />
+                            : (displayDeleteForm ?
+                                <DeleteCourse course={selectedCourse} handleCancel={handleCancel} />
+                                : (
+                                    <>
+                                        <Button variant="contained" onClick={handleAddCourse} sx={{ marginLeft: "1em" }}>הוספת קורס</Button>
+                                        <ListManageCourse handleEdit={handleEditButton} handleDelete={handleDeleteButton} />
+                                    </>
+                                )
+                            ))
+                    }
                 </Grid>
-            }
-            {displayDeleteForm &&
-                <Grid item>
-                    <DeleteCourse course={selectedCourse} handleCancel={handleCancel} />
+
+            ) : (
+                <Grid item xs={4}>
+                    <Stack direction="row" spacing={2} justifyContent="center">
+                        <Button variant="contained" onClick={handleAddCategory}>הוספת קטגוריה</Button>
+                        <Button variant="contained" onClick={handleEditCategory}>עריכת קטגוריה</Button>
+                    </Stack>
+                    {displayAddCategory &&
+                        <CreateCategory />
+                    }
+                    {displayEditCategory &&
+                        <EditCategory />
+                    }
                 </Grid>
-            }
-            
+            )}
         </Grid>
     )
 }

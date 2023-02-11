@@ -1,11 +1,13 @@
-import { useEffect, useState,useContext } from "react"
+import { useContext, useEffect, useState } from "react"
 import CoursesList from "../Course/CoursesList"
 import UserCourseServer from "../../serverAPI/userCourses"
 import { Grid, Typography } from "@mui/material"
-import AuthContext from '../../store/auth-context';
+import AuthContext from "../../store/auth-context"
+
 const UserCourses = () => {
     const [courses, setCourses] = useState([])
-    const authCtx = useContext (AuthContext); 
+    const authCtx = useContext(AuthContext)
+
     useEffect(() => {
         const getData = async () => {
             const data = await UserCourseServer.getAllCourses(authCtx.userId)
@@ -14,11 +16,12 @@ const UserCourses = () => {
             setCourses(courses)
         }
 
-        getData()
+        authCtx.userId && getData()
     }, [])
 
     return (
         <Grid container justifyContent="center" spacing={2} sx={{ marginTop: "1em" }}>
+            <Grid item xs={1} />
             <Grid item xs={3}>
                 <Typography variant="h4">קורסים שרכשתי</Typography>
             </Grid>

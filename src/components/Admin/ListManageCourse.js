@@ -1,5 +1,5 @@
 import { LoadingButton } from "@mui/lab"
-import {Card, Autocomplete, Button, Rating, Stack, TextField, Typography,Table,TableBody,TableCell,TableContainer,TableHead,TableRow, CardContent, TablePagination } from "@mui/material"
+import { Card, Autocomplete, Button, Rating, Stack, TextField, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, CardContent, TablePagination } from "@mui/material"
 import { Container } from "@mui/system"
 import { useEffect, useState } from "react"
 import CourseServer from "../../serverAPI/course"
@@ -16,7 +16,6 @@ const ListManageCourse = (props) => {
         const getData = async () => {
             const data = await CourseServer.getAllCourses()
             setCourse(data)
-            console.log(data);
         }
 
         getData()
@@ -35,12 +34,12 @@ const ListManageCourse = (props) => {
         return emptyValues.length > 0
     }
 
-    const handleChangePage =(event,newPage) =>{
+    const handleChangePage = (event, newPage) => {
         setPage(newPage);
     }
-    
-    const handleChangeRowsPerPage =(event) =>{
-        setRowsPerPage(event.target.value,10);
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(event.target.value, 10);
         setPage(0);
     }
     const handleSave = async () => {
@@ -73,34 +72,33 @@ const ListManageCourse = (props) => {
         <div>
             <Table size="small">
                 <TableHead>
-                <TableCell component="th">Name</TableCell>
-                <TableCell component="th">Price</TableCell>
-                <TableCell component="th">Author</TableCell>
-                <TableCell component="th">Rating</TableCell>
-                <TableCell component="th">Category</TableCell>
-                <TableCell component="th">Edit</TableCell>
-                <TableCell component="th">Delete</TableCell>
+                    <TableCell component="th">Name</TableCell>
+                    <TableCell component="th">Price</TableCell>
+                    <TableCell component="th">Author</TableCell>
+                    <TableCell component="th">Rating</TableCell>
+                    <TableCell component="th">Category</TableCell>
+                    <TableCell component="th">Edit</TableCell>
+                    <TableCell component="th">Delete</TableCell>
                 </TableHead>
                 <TableBody>
-                    {course?.slice(page*rowsPerPage,page*rowsPerPage + rowsPerPage).map((c) =>(
+                    {course?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((c) => (
                         <TableRow>
                             <TableCell >{c.name}</TableCell>
                             <TableCell >{c.price}</TableCell>
                             <TableCell >{c.author}</TableCell>
                             <TableCell >{c.rating}</TableCell>
-                            <TableCell >{(c.category)?c.category.name:""}</TableCell>
+                            <TableCell >{(c.category) ? c.category.name : ""}</TableCell>
                             <TableCell ><Button onClick={() => props.handleEdit(c)} >Edit</Button></TableCell>
                             <TableCell ><Button onClick={() => props.handleDelete(c)} >Delete</Button></TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
-                <TablePagination rowsPerPage={[5,10,25]}
-                                 component="div"
-                                 count={course.length}
-                                 rowsPerPage={rowsPerPage}
-                                 page={page}
-                                 onPageChange={handleChangePage}
-                                 onRowsPerPageChange={handleChangeRowsPerPage}></TablePagination>
+                <TablePagination component="div"
+                    count={course.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}></TablePagination>
             </Table>
         </div>
         // </TableContainer>
