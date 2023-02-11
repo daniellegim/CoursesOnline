@@ -9,6 +9,10 @@ export const useStyles = makeStyles((theme) =>
         authButton:{
             color: "white",
             textDecoration: "none"
+        },
+        navbarUserName:{
+            // paddingLeft:"10px",
+            paddingRight: "1rem"
         }
     })
 );
