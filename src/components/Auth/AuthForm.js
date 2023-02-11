@@ -113,6 +113,7 @@ fetch (url ,
         }).then((resProf) =>{ 
           console.log(resProf)
           console.log(data)
+          console.log("R")
           authCtx.email = data.email;
           authCtx.userId = data.localId;
           authCtx.userIsLoggin = true;
@@ -131,9 +132,9 @@ fetch (url ,
           {
             method: 'POST',
             body: JSON.stringify({
-                idToken:data.idToken,
-                photoUrl: ProfileImage,
-                displayName: enteredUserName
+                idToken:data.idToken
+                // photoUrl: ProfileImage,
+                // displayName: enteredUserName
                 // returnSecureToken: true
             }),
             headers:{
@@ -142,11 +143,13 @@ fetch (url ,
           }).then((resProf) =>{ 
             return resProf.json();
           }).then((dataProf) => {
+            console.log(dataProf)
+            console.log("L")
             authCtx.email = data.email;
             authCtx.userId = data.localId;
             authCtx.userIsLoggin = true;
-            authCtx.photoUrl = dataProf.photoUrl;
-            authCtx.userName = dataProf.displayName
+            authCtx.photoUrl = dataProf.users[0].photoUrl;
+            authCtx.userName = dataProf.users[0].displayName
             authCtx.isLogout = false;
             authCtx.token = data.idToken;
             authCtx.login (data.idToken,data.email,data.localId);
