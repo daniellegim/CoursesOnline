@@ -16,11 +16,12 @@ const UserCourses = () => {
             setCourses(courses)
         }
 
-        getData()
+        authCtx.userId && getData()
     }, [])
 
     return (
         <Grid container justifyContent="center" spacing={2} sx={{ marginTop: "1em" }}>
+            <Grid item xs={1} />
             <Grid item xs={3}>
                 <Typography variant="h4">קורסים שרכשתי</Typography>
             </Grid>

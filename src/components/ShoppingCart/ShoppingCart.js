@@ -6,6 +6,7 @@ import CoursesListCart from "./CoursesListCart"
 import UserCourseServer from "../../serverAPI/userCourses"
 import { LoadingButton } from "@mui/lab"
 import AuthContext from "../../store/auth-context"
+import { Link } from "react-router-dom"
 
 const ShoppingCart = () => {
     const [openDialog, setOpenDialog] = useState(false)
@@ -70,7 +71,14 @@ const ShoppingCart = () => {
                 <DialogContent>
                     <CoursesListCart courses={coursesInCart} />
                     {coursesInCart.length ?
-                        <Typography variant="h6" sx={{ marginTop: "1em", marginLeft: "9em" }}>סה"כ לתשלום: {totalPrice}</Typography>
+                        <Typography variant="h6" sx={{ marginTop: "1em", marginLeft: "9em" }}>סה"כ לתשלום: {totalPrice}₪</Typography>
+                        : null
+                    }
+                    {coursesInCart.length && !authCtx.userId ?
+                        <Typography sx={{ marginTop: "1em", marginLeft: "5em" }}>
+                            נראה שעדיין לא התחברת, 
+                            <Link to="/auth" style={{ color: "blue" }}>התחבר כדי להמשיך</Link>
+                        </Typography>
                         : null
                     }
                 </DialogContent>
@@ -79,6 +87,7 @@ const ShoppingCart = () => {
                         <Button id="no" onClick={handleCloseDialog}>בטל</Button>
                         <LoadingButton
                             id="yes"
+                            disabled={!authCtx.userId}
                             loading={loadingSave}
                             loadingPosition="center"
                             variant="contained"

@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material"
+import { Grid, CircularProgress, Backdrop } from "@mui/material"
 import { useEffect, useState } from "react"
 import CourseServer from "../serverAPI/course"
 import CoursesList from "./Course/CoursesList"
@@ -10,6 +10,7 @@ const Home = () => {
     const [courses, setCourses] = useState([])
     const [filteredCourses, setFilteresCourses] = useState([])
     const [filters, setFilters] = useState({})
+    const [isLoading, setLoading] = useState(true)
     const [page, setPage] = useState(1)
 
     useEffect(() => {
@@ -21,6 +22,7 @@ const Home = () => {
 
             setCourses([...courses, ...data])
             setFilteresCourses(filtered)
+            setLoading(false)
         }
 
         getData()
@@ -31,8 +33,10 @@ const Home = () => {
     }
 
     const filterCoursesByName = async (value) => {
+        setLoading(true)
         const filtered = await CourseServer.getAllCourses(value)
         setFilteresCourses(filtered)
+        setLoading(false)
     }
 
     const filterCourses = async (filter) => {
@@ -41,6 +45,7 @@ const Home = () => {
     }
 
     return (
+
         <Grid container justifyContent="center" spacing={2} sx={{ marginTop: "1em" }}>
             <Grid item xs={3} />
             <Grid item xs={5}>
@@ -53,7 +58,13 @@ const Home = () => {
                 <ShoppingCart />
             </Grid>
             <Grid item xs={10}>
-                <CoursesList courses={filteredCourses} handleLoadMore={handleLoadMore} />
+                {(isLoading) ?
+                    <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open>
+                        <CircularProgress color="inherit" size="5rem" />
+                    </Backdrop>
+                    :
+                    <CoursesList courses={filteredCourses} handleLoadMore={handleLoadMore} />
+                }
             </Grid>
         </Grid>
     )

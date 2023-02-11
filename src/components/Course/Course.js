@@ -11,6 +11,7 @@ const Course = (props) => {
     const handleAddToCart = (course) => {
         addToCart(course)
     }
+
     const raiseNavigateEvent = () => {
         props.navigateProduct(course);
     }
@@ -30,6 +31,11 @@ const Course = (props) => {
                 }
             />
             <CardContent onClick={raiseNavigateEvent}>
+                {course.imgURL &&
+                    <div className={classes.imageCourseDiv} >
+                        <img className={classes.imageCourse} src={course.imgURL} alt={course.title}></img>
+                    </div>
+                }
                 <Typography variant="h6">
                     {course.description.length > 100 ? `${course.description.substring(0, 100)}...` : course.description}
                 </Typography>
