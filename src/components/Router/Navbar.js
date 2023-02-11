@@ -1,4 +1,4 @@
-import React, { useState,useContext,useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -7,14 +7,12 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Avatar, Drawer, List, ListItem, ListItemButton, ListItemText } from '@mui/material';
-import { Link,useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useStyles } from './style';
 import AuthContext from "../../store/auth-context"
 import AdminServer from '../../serverAPI/admin';
 
-const Navbar = () => {
-
- 
+const Navbar = (props) => {
     const classes = useStyles()
     const authCtx = useContext(AuthContext)
     const [openDrawer, setOpenDrawer] = useState(false)
@@ -25,17 +23,17 @@ const Navbar = () => {
         {
             path: "/",
             text: "דף הבית",
-            isNeedSignIn:false
+            isNeedSignIn: false
         },
         {
             path: "/mycourses",
             text: "הקורסים שלי",
-            isNeedSignIn:true
+            isNeedSignIn: true
         },
         {
             path: "/profile",
             text: "פרופיל",
-            isNeedSignIn:true
+            isNeedSignIn: true
         }
     ]
 
@@ -51,7 +49,7 @@ const Navbar = () => {
         {
             path: "/admin",
             text: "מנהלן",
-            isNeedSignIn:true
+            isNeedSignIn: true
         }
     ]
 
@@ -60,16 +58,23 @@ const Navbar = () => {
             if (authCtx.userId) {
                 const admin = await AdminServer.getAdmin(authCtx.userId)
                 setAdmin(admin.length > 0)
+                props.handleAdmin(admin.length > 0)
             }
         }
 
         getData()
     }, [authCtx.userId])
 
-    const logoutAction = () =>{
-        // setIsLogout(true);
+    const logoutAction = () => {
         authCtx.isLogout = true;
+        authCtx.userId = ""
+        authCtx.token = ""
+        authCtx.email = ""
+        authCtx.userIsLoggin = false
+        authCtx.userName = ""
+        authCtx.photoUrl = ""
         authCtx.logout();
+        setAdmin(false)
         history('/');
     }
 
@@ -95,22 +100,18 @@ const Navbar = () => {
                     >
                         <MenuIcon />
                     </IconButton>
-                    {/* <Typography variant="h6" component="div" >
-                        קורסים אונליין
-                    </Typography> */}
-                    {authCtx.isLogout === false && <Avatar src={authCtx.photoUrl}></Avatar> }
-                    {(isLogout === false)? <Typography className={classes.navbarUserName} variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                         {authCtx.userName}
-                    </Typography>:<Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                    </Typography> }
+                    {authCtx.isLogout === false && <Avatar src={authCtx.photoUrl}></Avatar>}
+                    {(isLogout === false) ? <Typography className={classes.navbarUserName} variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                        {authCtx.userName}
+                    </Typography> : <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                    </Typography>}
                     {(isLogout === true) &&
-                    <Link className={classes.authButton} to="/auth">
-                        
+                        <Link className={classes.authButton} to="/auth">
                             <Button color="inherit" >Login</Button>
-                    </Link>
-                }
-                    {(isLogout === false)&&
-                            <Button color="inherit" onClick={logoutAction}>Logout</Button>}
+                        </Link>
+                    }
+                    {(isLogout === false) &&
+                        <Button color="inherit" onClick={logoutAction}>Logout</Button>}
                 </Toolbar>
             </AppBar>
             <React.Fragment>
@@ -137,7 +138,7 @@ const Navbar = () => {
                                     </Link>
                                 ))) :
                                 (menu.map((item, index) => (
-                                    (item.isNeedSignIn == false || (item.isNeedSignIn && isLogout == false ) ) && 
+                                    (item.isNeedSignIn === false || (item.isNeedSignIn && isLogout === false)) &&
                                     <Link className={classes.menu} to={item.path} key={index}>
                                         <ListItem key={item.text} disablePadding>
                                             <ListItemButton>

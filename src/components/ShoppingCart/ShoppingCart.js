@@ -74,7 +74,7 @@ const ShoppingCart = () => {
                         <Typography variant="h6" sx={{ marginTop: "1em", marginLeft: "9em" }}>סה"כ לתשלום: {totalPrice}₪</Typography>
                         : null
                     }
-                    {coursesInCart.length && !authCtx.userId ?
+                    {coursesInCart.length && authCtx.isLogout ?
                         <Typography sx={{ marginTop: "1em", marginLeft: "5em" }}>
                             נראה שעדיין לא התחברת, 
                             <Link to="/auth" style={{ color: "blue" }}>התחבר כדי להמשיך</Link>
