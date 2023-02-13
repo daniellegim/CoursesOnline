@@ -1,5 +1,5 @@
-import { useState } from "react"
-import { Button, Grid, Paper, Stack, Tab, Tabs } from "@mui/material"
+import { useState,useEffect } from "react"
+import { Button, Grid, Paper, Stack, Tab, Tabs,Card,CardContent,CardHeader } from "@mui/material"
 import CategoryChart from "./Chart"
 import CreateCourse from "./CreateCourse"
 import ListManageCourse from "./ListManageCourse"
@@ -7,7 +7,7 @@ import EditCourse from "./EditCourse"
 import DeleteCourse from "./DeleteCourse"
 import CreateCategory from "./CreateCategory"
 import EditCategory from "./EditCategory"
-
+import io from 'socket.io-client';
 const Admin = () => {
     const [currentTab, setCurrentTab] = useState(0)
     const [selectedCourse, setselectedCourse] = useState({})
@@ -16,11 +16,15 @@ const Admin = () => {
     const [displayAddCourse, setDisplayAddCourse] = useState(false)
     const [displayAddCategory, setDisplayAddCategory] = useState(false)
     const [displayEditCategory, setDisplayEditCategory] = useState(false)
-
+    const [numberOfClients, setNumberOfClients] = useState(0)
+    const socket = io("http://localhost:3000");
     const handleChangeTab = (event, newValue) => {
         setCurrentTab(newValue)
     }
-
+    
+    socket.on("connectedUsersCount", async (msg) => {
+        setNumberOfClients(msg);
+    })
     const handleEditButton = (course) => {
         setDisplayEditForm(true)
         setDisplayDeleteForm(false)
@@ -65,7 +69,9 @@ const Admin = () => {
             {currentTab === 0 ? (
                 <Grid item>
                     <CategoryChart />
+                    <Card><CardHeader title="מספר משתמשים מחוברים"></CardHeader><CardContent><div>{numberOfClients}</div></CardContent></Card>
                 </Grid>
+                
             ) : currentTab === 1 ? (
                 <Grid item xs={(displayAddCourse || displayEditForm || displayDeleteForm) ? 4 : 12}>
                     {displayAddCourse ?
