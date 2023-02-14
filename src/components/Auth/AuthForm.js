@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import classes from './AuthForm.module.css';
 import { TextField, Avatar, Button,Container,Card,CardContent,CardHeader } from '@mui/material';
 import ImgUpload from "../Profile/ImgUpload"
-
 const AuthForm = (props) => {
 
   const emailInputRef = useRef();
@@ -34,8 +33,6 @@ const AuthForm = (props) => {
   const getProfileImage = (file) =>{
     console.log(file)
     const enteredImage = file.target.value;
-    // console.log(uploadImageRef)
-    // console.log(enteredImage)
     setProfileImage(enteredImage)
     console.log(ProfileImage)
 
