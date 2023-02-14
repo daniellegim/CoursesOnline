@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-
+import io from 'socket.io-client';
 const AuthContext = React.createContext({
     email: '',
     userId: '',
@@ -8,13 +8,13 @@ const AuthContext = React.createContext({
     userIsLoggin: false,
     photoUrl: '',
     isLogout: true,
+    socket:io("http://localhost:3000"),
     userName: '',
     login: (token, email, localId) => { },
     logout: () => { },
 });
 
 export const AuthContextProvider = (props) => {
-
     const [token, setToken] = useState(null);
     const [email, setEmail] = useState(null);
     const [userId, setUserId] = useState(null);
@@ -25,6 +25,7 @@ export const AuthContextProvider = (props) => {
         setEmail(email)
         setUserId(localId)
         setIsLogin(true);
+        
         console.log(userIsLoggin)
     }
     const logoutHandler = () => {

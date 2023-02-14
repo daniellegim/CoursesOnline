@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react"
+import { useState,useEffect,useContext } from "react"
 import { Button, Grid, Paper, Stack, Tab, Tabs,Card,CardContent,CardHeader } from "@mui/material"
 import CategoryChart from "./Chart"
 import CreateCourse from "./CreateCourse"
@@ -6,9 +6,10 @@ import ListManageCourse from "./ListManageCourse"
 import EditCourse from "./EditCourse"
 import DeleteCourse from "./DeleteCourse"
 import CreateCategory from "./CreateCategory"
+import AuthContext from '../../store/auth-context';
 import EditCategory from "./EditCategory"
-import io from 'socket.io-client';
 const Admin = () => {
+    const authCtx = useContext (AuthContext); 
     const [currentTab, setCurrentTab] = useState(0)
     const [selectedCourse, setselectedCourse] = useState({})
     const [displayEditForm, setDisplayEditForm] = useState(false)
@@ -17,12 +18,11 @@ const Admin = () => {
     const [displayAddCategory, setDisplayAddCategory] = useState(false)
     const [displayEditCategory, setDisplayEditCategory] = useState(false)
     const [numberOfClients, setNumberOfClients] = useState(0)
-    const socket = io("http://localhost:3000");
     const handleChangeTab = (event, newValue) => {
         setCurrentTab(newValue)
     }
     
-    socket.on("connectedUsersCount", async (msg) => {
+    authCtx.socket.on("connectedUsersCount", async (msg) => {
         setNumberOfClients(msg);
     })
     const handleEditButton = (course) => {

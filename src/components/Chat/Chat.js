@@ -1,12 +1,14 @@
 import React from "react";
+import { useContext } from 'react';
+import AuthContext from '../../store/auth-context';
 import { Launcher } from 'react-chat-window'
 import io from 'socket.io-client';
 class ChatBotRobot extends React.Component {
-    constructor(props) {
+    constructor(props,context) {
         super(props);
 this.state = {
             messageList: [],
-            socket: io("http://localhost:3000"),
+            socket: props.context.socket,
             room: "user1",
         }
 }
@@ -14,7 +16,7 @@ UNSAFE_componentWillMount() {
         this._sendMessage("Hey there ! Would You Like Me To Advise You Which Course To Buy?");
     }
 componentDidMount() {
-        this.state.socket.connect(true);
+        // this.state.socket.connect(true);
         this.state.socket.emit('join', this.state.room);
 this.state.socket.on("send-msg-response", async (msg) => {
             this.state.messageList.pop();
