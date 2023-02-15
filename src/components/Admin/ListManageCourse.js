@@ -88,8 +88,8 @@ const ListManageCourse = (props) => {
                             <TableCell >{c.author}</TableCell>
                             <TableCell >{c.rating}</TableCell>
                             <TableCell >{(c.category) ? c.category.name : ""}</TableCell>
-                            <TableCell ><Button onClick={() => props.handleEdit(c)} >Edit</Button></TableCell>
-                            <TableCell ><Button onClick={() => props.handleDelete(c)} >Delete</Button></TableCell>
+                            <TableCell ><Button onClick={() => props.handleEdit(c)} >עריכה</Button></TableCell>
+                            <TableCell ><Button onClick={() => props.handleDelete(c)} >מחיקה</Button></TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
