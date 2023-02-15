@@ -1,5 +1,5 @@
-import { useState,useEffect,useContext } from "react"
-import { Button, Grid, Paper, Stack, Tab, Tabs,Card,CardContent,CardHeader } from "@mui/material"
+import { useState, useContext } from "react"
+import { Button, Grid, Paper, Stack, Tab, Tabs, Card, CardContent, CardHeader, Typography } from "@mui/material"
 import CategoryChart from "./Chart"
 import CreateCourse from "./CreateCourse"
 import ListManageCourse from "./ListManageCourse"
@@ -8,8 +8,10 @@ import DeleteCourse from "./DeleteCourse"
 import CreateCategory from "./CreateCategory"
 import AuthContext from '../../store/auth-context';
 import EditCategory from "./EditCategory"
+import CreateLevel from "./CreateLevel"
+import EditLevel from "./EditLevel"
 const Admin = () => {
-    const authCtx = useContext (AuthContext); 
+    const authCtx = useContext(AuthContext);
     const [currentTab, setCurrentTab] = useState(0)
     const [selectedCourse, setselectedCourse] = useState({})
     const [displayEditForm, setDisplayEditForm] = useState(false)
@@ -17,11 +19,14 @@ const Admin = () => {
     const [displayAddCourse, setDisplayAddCourse] = useState(false)
     const [displayAddCategory, setDisplayAddCategory] = useState(false)
     const [displayEditCategory, setDisplayEditCategory] = useState(false)
+    const [displayAddLevel, setDisplayAddLevel] = useState(false)
+    const [displayEditLevel, setDisplayEditLevel] = useState(false)
     const [numberOfClients, setNumberOfClients] = useState(0)
+
     const handleChangeTab = (event, newValue) => {
         setCurrentTab(newValue)
     }
-    
+
     authCtx.socket.on("connectedUsersCount", async (msg) => {
         setNumberOfClients(msg);
     })
@@ -57,6 +62,16 @@ const Admin = () => {
         setDisplayAddCategory(false)
     }
 
+    const handleAddLevel = () => {
+        setDisplayAddLevel(true)
+        setDisplayEditLevel(false)
+    }
+
+    const handleEditLevel = () => {
+        setDisplayEditLevel(true)
+        setDisplayAddLevel(false)
+    }
+
     return (
         <Grid container justifyContent="center" spacing={2} sx={{ marginTop: "0.5em" }}>
             <Paper sx={{ width: "100%" }}>
@@ -64,14 +79,26 @@ const Admin = () => {
                     <Tab label="סטטיסטיקות" />
                     <Tab label="ניהול קורסים" />
                     <Tab label="ניהול קטגוריות" />
+                    <Tab label="ניהול רמות קורס" />
                 </Tabs>
             </Paper>
             {currentTab === 0 ? (
-                <Grid item>
-                    <CategoryChart />
-                    <Card><CardHeader title="מספר משתמשים מחוברים"></CardHeader><CardContent><div>{numberOfClients}</div></CardContent></Card>
+                <Grid item container>
+                    <Grid item xs={0.3} />
+                    <Grid item>
+                        <Card>
+                            <CardHeader title="מספר משתמשים מחוברים" />
+                            <CardContent>
+                                <Typography variant="h5">{numberOfClients}</Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                    <Grid item xs={0.6} />
+                    <Grid item>
+                        <CategoryChart />
+                    </Grid>
                 </Grid>
-                
+
             ) : currentTab === 1 ? (
                 <Grid item xs={(displayAddCourse || displayEditForm || displayDeleteForm) ? 4 : 12}>
                     {displayAddCourse ?
@@ -90,7 +117,7 @@ const Admin = () => {
                     }
                 </Grid>
 
-            ) : (
+            ) : currentTab === 2 ? (
                 <Grid item xs={4}>
                     <Stack direction="row" spacing={2} justifyContent="center">
                         <Button variant="contained" onClick={handleAddCategory}>הוספת קטגוריה</Button>
@@ -103,7 +130,21 @@ const Admin = () => {
                         <EditCategory />
                     }
                 </Grid>
-            )}
+            ) : (
+                <Grid item xs={4}>
+                    <Stack direction="row" spacing={2} justifyContent="center">
+                        <Button variant="contained" onClick={handleAddLevel}>הוספת רמה</Button>
+                        <Button variant="contained" onClick={handleEditLevel}>עריכת רמה</Button>
+                    </Stack>
+                    {displayAddLevel &&
+                        <CreateLevel />
+                    }
+                    {displayEditLevel &&
+                        <EditLevel />
+                    }
+                </Grid>
+            )
+            }
         </Grid>
     )
 }
