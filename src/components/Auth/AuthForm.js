@@ -118,7 +118,15 @@ fetch (url ,
           authCtx.userName = enteredUserName;
           authCtx.token = data.idToken;
           authCtx.isLogout = false;
-          localStorage.setItem('user',JSON.stringify(authCtx));
+          localStorage.setItem('user',JSON.stringify({
+            email: authCtx.email,
+            userId: authCtx.userId,
+            token: authCtx.token,
+            userIsLoggin: authCtx.userIsLoggin,
+            photoUrl: authCtx.photoUrl,
+            isLogout: authCtx.isLogout,
+            userName: authCtx.userName,
+          }));
           authCtx.login (data.idToken,data.email,data.localId);
           history('/');
         });
@@ -150,7 +158,15 @@ fetch (url ,
             authCtx.userName = dataProf.users[0].displayName
             authCtx.isLogout = false;
             authCtx.token = data.idToken;
-            localStorage.setItem('user',JSON.stringify(authCtx));
+            localStorage.setItem('user',JSON.stringify({
+              email: authCtx.email,
+              userId: authCtx.userId,
+              token: authCtx.token,
+              userIsLoggin: authCtx.userIsLoggin,
+              photoUrl: authCtx.photoUrl,
+              isLogout: authCtx.isLogout,
+              userName: authCtx.userName,
+            }));
             authCtx.login (data.idToken,data.email,data.localId);
             history('/');
           })
