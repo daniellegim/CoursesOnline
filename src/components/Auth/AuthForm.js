@@ -118,6 +118,7 @@ fetch (url ,
           authCtx.userName = enteredUserName;
           authCtx.token = data.idToken;
           authCtx.isLogout = false;
+          localStorage.setItem('user',JSON.stringify(authCtx));
           authCtx.login (data.idToken,data.email,data.localId);
           history('/');
         });
@@ -149,6 +150,7 @@ fetch (url ,
             authCtx.userName = dataProf.users[0].displayName
             authCtx.isLogout = false;
             authCtx.token = data.idToken;
+            localStorage.setItem('user',JSON.stringify(authCtx));
             authCtx.login (data.idToken,data.email,data.localId);
             history('/');
           })

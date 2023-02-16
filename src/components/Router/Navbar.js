@@ -73,6 +73,7 @@ const Navbar = (props) => {
         authCtx.userIsLoggin = false
         authCtx.userName = ""
         authCtx.photoUrl = ""
+        localStorage.removeItem('user');
         authCtx.logout();
         setAdmin(false)
         history('/');
